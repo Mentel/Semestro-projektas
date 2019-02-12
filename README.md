@@ -1,6 +1,6 @@
 # Semestro-projektas
 
 Projekto nariai:
-Tadas
+Tadas Maruðka
 Matas Goštautas
 Nojus Rimeisis
