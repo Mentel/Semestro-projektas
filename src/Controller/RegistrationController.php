@@ -45,4 +45,36 @@ class RegistrationController extends AbstractController
             'registrationForm' => $form->createView(),
         ]);
     }
+    /**
+     * @Route("/user/delete/{max}", name="delete")
+     */
+    public function delete($max)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $repository = $this->getDoctrine()->getRepository(User::class)
+            ->findAll();
+        foreach($repository as &$a)
+        {
+            $entityManager->remove($a);
+        }
+        $entityManager->flush();
+        return new Response('Saved new product with id 1');
+    }
+
+    /**
+     * @Route("/user/all/{all}", name="all")
+     */
+    public function all($all)
+    {
+        $repository = $this->getDoctrine()->getRepository(User::class)
+            ->findAll();
+        foreach($repository as &$a)
+        {
+            $a->getEmail();
+            echo "<br>";
+            echo $a->getEmail();
+        }
+        echo "<br>";
+        return new Response('nic');
+    }
 }
