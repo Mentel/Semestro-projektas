@@ -38,7 +38,7 @@ class RegistrationController extends AbstractController
 
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('idk');
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('registration/register.html.twig', [
@@ -73,8 +73,14 @@ class RegistrationController extends AbstractController
             $a->getEmail();
             echo "<br>";
             echo $a->getEmail();
+            foreach($a->getRoles() as &$b){
+                echo "<br>";
+                echo "role";
+                echo $b;
+            }
         }
         echo "<br>";
         return new Response('nic');
+
     }
 }
