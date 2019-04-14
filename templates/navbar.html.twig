@@ -7,9 +7,6 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto ml-4">
             <li class="nav-item">
-                <a class="nav-link" href="/">Pradžia</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="/events">Renginiai</a>
             </li>
             <li class="nav-item">
@@ -17,9 +14,21 @@
             </li>
         </ul>
         <ul class="navbar-nav ml-auto mr-4">
-            <li class="nav-item">
-                <a class="nav-link" href="/login">Login</a>
-            </li>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><b>{{ app.user.email }}</b></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/register">Register</a>
+                </li>
+            {% endif %}
         </ul>
     </div>
 </nav>

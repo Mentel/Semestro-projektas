@@ -3,12 +3,24 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
+    <div class="row justify-content-center">
+        {{ form_start(registrationForm) }}
+            <h1 class="h3 mb-3 mt-3 font-weight-normal">Please register</h1>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email address</label>
+                {{ form_errors(registrationForm.email) }}
+                {{ form_widget(registrationForm.email, {'attr': {'type': 'email', 'class': 'form-control', 'name': 'email', 'id': 'inputEmail', 'aria-describedby': 'emailHelp', 'required': '', 'autofocus': '', 'placeholder': 'Enter email'}}) }}
+            </div>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword) }}
+            <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                {{ form_errors(registrationForm.plainPassword) }}
+                {{ form_widget(registrationForm.plainPassword, {'attr': {'type': 'password', 'class': 'form-control', 'name': 'password', 'id': 'inputPassword', 'required': '', 'placeholder': 'Password'}}) }}
+            </div>
 
-        <button type="submit" class="btn btn-success">Register</button>
-    {{ form_end(registrationForm) }}
+            <div class="row justify-content-center">
+                <button type="submit" class="btn btn-success">Register</button>
+            </div>
+        {{ form_end(registrationForm) }}
+    </div>
 {% endblock %}
