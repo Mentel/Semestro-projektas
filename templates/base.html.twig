@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
@@ -7,11 +8,14 @@
             <link rel="stylesheet" href="bootstrap.min.css">
         {% endblock %}
     </head>
+
     <body>
         {{ include('navbar.html.twig') }}
 
         <div class="container">
-        {% block body %}{% endblock %}
+        {% block body %}
+
+        {% endblock %}
         </div>
 
         {% block javascripts %}
@@ -20,4 +24,5 @@
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         {% endblock %}
     </body>
+
 </html>
