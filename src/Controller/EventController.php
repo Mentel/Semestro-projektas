@@ -18,14 +18,11 @@ class EventController extends AbstractController
      */
     public function index(Request $request)
     {
-
-        // creates a task and gives it some dummy data for this example
-        $eventVar = new Event();
-        $eventVar->setName("Iveskite renginio pavadinima");
-
         $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'User tried to access a page without having ROLE_ADMIN');
         $usr = $this->get('security.token_storage')->getToken()->getUser();
 
+        $eventVar = new Event();
+        $eventVar->setName("Iveskite renginio pavadinima");
         $eventVar->setHost($usr);
         $eventVar->setDescription("Iveskite renginio aprasyma");
         $eventVar->setDate(new \DateTime('now'));
@@ -56,7 +53,7 @@ class EventController extends AbstractController
         }
 
         return $this->render('event/index.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ]);
     }
     /**

@@ -38,7 +38,7 @@ class TestController extends AbstractController
     /**
      * @Route("/admin", name="create_superuser")
      */
-    public function delete($max, UserPasswordEncoderInterface $passwordEncoder)
+    public function delete(UserPasswordEncoderInterface $passwordEncoder)
     {
         $user = new User();
         // encode the plain password
