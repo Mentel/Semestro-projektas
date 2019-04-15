@@ -49,7 +49,7 @@ class EventController extends AbstractController
              $entityManager->persist($eventVar);
              $entityManager->flush();
 
-            return $this->redirectToRoute('event_all');
+            return $this->redirectToRoute('events_all');
         }
 
         return $this->render('event/index.html.twig', [
@@ -61,16 +61,8 @@ class EventController extends AbstractController
      */
     public function all()
     {
-        $repository = $this->getDoctrine()->getRepository(Event::class)
-            ->findAll();
-        foreach($repository as &$a)
-        {
-            echo "<br>";
-            echo $a->getDate()->format('Y-m-d H:i:s');
-
-        }
-        echo "<br>";
-        return new Response('nice :)');
-
+        $events = $this->getDoctrine()->getRepository(Event::class)->findAll();
+            //echo $a->getDate()->format('Y-m-d H:i:s');
+        return $this->render('event/list.html.twig', ['events' => $events]);
     }
 }

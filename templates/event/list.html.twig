@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Renginių sąrašas{% endblock %}
+
+{% block body %}
+    <h1 class="mb-4">Renginiai</h1>
+
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Renginys</th>
+                <th scope="col">Data</th>
+                <th scope="col">Adresas</th>
+                <th scope="col">Kūrėjas</th>
+                <th scope="col">Aprašymas</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+                <tr>
+                    <td>{{ event.name }}</td>
+                    <td>{{ event.date.format('Y-m-d H:i') }}</td>
+                    <td>{{ event.address }}</td>
+                    <td>admin</td>
+                    <td>{{ event.description }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
