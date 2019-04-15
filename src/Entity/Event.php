@@ -47,14 +47,14 @@ class Event
         return $this->id;
     }
 
-    public function getAdress(): ?string
+    public function getAddress(): ?string
     {
         return $this->address;
     }
 
-    public function setAdress(string $adress): self
+    public function setAddress(string $address): self
     {
-        $this->address = $adress;
+        $this->address = $address;
 
         return $this;
     }
