@@ -13,7 +13,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class TestController extends AbstractController
 {
     /**
-     * @Route("/admin", name="admin_user_list")
+     * @Route("/user/all", name="admin_user
+     * _list")
      */
     public function index()
     {
@@ -35,7 +36,7 @@ class TestController extends AbstractController
         return new Response('nic');
     }
     /**
-     * @Route("/admin/{max}", name="create_root")
+     * @Route("/admin", name="create_superuser")
      */
     public function delete($max, UserPasswordEncoderInterface $passwordEncoder)
     {

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Event;
 use App\Form\RegistrationFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,6 +53,12 @@ class RegistrationController extends AbstractController
     public function delete($max)
     {
         $entityManager = $this->getDoctrine()->getManager();
+        $repository = $this->getDoctrine()->getRepository(Event::class)
+            ->findAll();
+        foreach($repository as &$a)
+        {
+            $entityManager->remove($a);
+        }
         $repository = $this->getDoctrine()->getRepository(User::class)
             ->findAll();
         foreach($repository as &$a)
@@ -59,7 +66,7 @@ class RegistrationController extends AbstractController
             $entityManager->remove($a);
         }
         $entityManager->flush();
-        return new Response('Saved new product with id 1');
+        return new Response('gz');
     }
 
     /**
