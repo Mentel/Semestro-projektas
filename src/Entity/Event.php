@@ -54,7 +54,7 @@ class Event
 
     public function setAdress(string $adress): self
     {
-        $this->adress = $adress;
+        $this->address = $adress;
 
         return $this;
     }
