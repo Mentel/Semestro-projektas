@@ -4,23 +4,27 @@
 
 {% block body %}
     <div class="row justify-content-center">
-        {{ form_start(registrationForm) }}
-            <h1 class="h3 mb-3 mt-3 font-weight-normal">Registracija</h1>
-            <div class="form-group">
-                <label for="exampleInputEmail1">Elektroninis paštas</label>
-                {{ form_errors(registrationForm.email) }}
-                {{ form_widget(registrationForm.email, {'attr': {'type': 'email', 'class': 'form-control', 'name': 'email', 'id': 'inputEmail', 'aria-describedby': 'emailHelp', 'required': '', 'autofocus': '', 'placeholder': 'Įveskite el.paštą'}}) }}
-            </div>
+        <div class="card">
+            <div class="card-body">
+                {{ form_start(registrationForm) }}
+                    <h1 class="h3 mb-3 mt-3 font-weight-normal">Registracija</h1>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Elektroninis paštas</label>
+                        {{ form_errors(registrationForm.email) }}
+                        {{ form_widget(registrationForm.email, {'attr': {'type': 'email', 'class': 'form-control', 'name': 'email', 'id': 'inputEmail', 'aria-describedby': 'emailHelp', 'required': '', 'autofocus': '', 'placeholder': 'Įveskite el.paštą'}}) }}
+                    </div>
 
-            <div class="form-group">
-                <label for="exampleInputPassword1">Slaptažodis</label>
-                {{ form_errors(registrationForm.plainPassword) }}
-                {{ form_widget(registrationForm.plainPassword, {'attr': {'type': 'password', 'class': 'form-control', 'name': 'password', 'id': 'inputPassword', 'required': '', 'placeholder': 'Slaptažodis'}}) }}
-            </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Slaptažodis</label>
+                        {{ form_errors(registrationForm.plainPassword) }}
+                        {{ form_widget(registrationForm.plainPassword, {'attr': {'type': 'password', 'class': 'form-control', 'name': 'password', 'id': 'inputPassword', 'required': '', 'placeholder': 'Slaptažodis'}}) }}
+                    </div>
 
-            <div class="row justify-content-center">
-                <button type="submit" class="btn btn-success">Registruotis</button>
+                    <div class="row justify-content-center">
+                        <button type="submit" class="btn btn-success">Registruotis</button>
+                    </div>
+                {{ form_end(registrationForm) }}
             </div>
-        {{ form_end(registrationForm) }}
+        </div>
     </div>
 {% endblock %}
