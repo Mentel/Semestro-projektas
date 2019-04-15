@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,14 +16,25 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email')
+            ->add('email', EmailType::class ,[
+
+                'constraints' => [new NotBlank([
+                    'message' => 'Įveskite elektroninį paštą',
+                ]),
+                new Length([
+                    'min' => 6,
+                    'minMessage' => 'El. pastas turi turėti bent {{ limit }} simbolius',
+                    // max length allowed by Symfony for security reasons
+                    'max' => 255,
+                ])]
+            ])
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Įveskite elektroninį paštą',
+                        'message' => 'Įveskite slaptazodi',
                     ]),
                     new Length([
                         'min' => 6,

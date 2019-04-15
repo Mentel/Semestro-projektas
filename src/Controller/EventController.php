@@ -14,7 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class EventController extends AbstractController
 {
     /**
-     * @Route("/event", name="event")
+     * @Route("/event/add", name="events")
      */
     public function index(Request $request)
     {
@@ -23,7 +23,7 @@ class EventController extends AbstractController
         $eventVar = new Event();
         $eventVar->setName("Iveskite renginio pavadinima");
 
-        //$this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'User tried to access a page without having ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'User tried to access a page without having ROLE_ADMIN');
         $usr = $this->get('security.token_storage')->getToken()->getUser();
 
         $eventVar->setHost($usr);
@@ -60,7 +60,7 @@ class EventController extends AbstractController
         ]);
     }
     /**
-     * @Route("/event/all", name="event_all")
+     * @Route("/events", name="events_all")
      */
     public function all()
     {
