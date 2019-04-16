@@ -1,0 +1,31 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand ml-4" href="/">Renginių kalendorius</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto ml-4">
+            <li class="nav-item">
+                <a class="nav-link" href="/events">Renginiai</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto mr-4">
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><b>{{ app.user.email }}</b></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Atsijungti</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Prisijungti</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/register">Registruotis</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
