@@ -5,7 +5,6 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Event;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -13,10 +12,11 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class EventController extends AbstractController
 {
+    //TODO: Redo form
     /**
-     * @Route("/event/add", name="events")
+     * @Route("/event/add", name="app_event_add")
      */
-    public function index(Request $request)
+    public function addEvent(Request $request)
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'User tried to access a page without having ROLE_ADMIN');
         $usr = $this->get('security.token_storage')->getToken()->getUser();
@@ -49,20 +49,20 @@ class EventController extends AbstractController
              $entityManager->persist($eventVar);
              $entityManager->flush();
 
-            return $this->redirectToRoute('events_all');
+            return $this->redirectToRoute('app_event_list');
         }
 
-        return $this->render('event/index.html.twig', [
+        return $this->render('event/add.html.twig', [
             'form' => $form->createView()
         ]);
     }
+
     /**
-     * @Route("/events", name="events_all")
+     * @Route("/events", name="app_event_list")
      */
-    public function all()
+    public function listAllEvents()
     {
         $events = $this->getDoctrine()->getRepository(Event::class)->findAll();
-            //echo $a->getDate()->format('Y-m-d H:i:s');
         return $this->render('event/list.html.twig', ['events' => $events]);
     }
 }

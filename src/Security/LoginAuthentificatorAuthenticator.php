@@ -21,6 +21,7 @@ use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
 class LoginAuthentificatorAuthenticator extends AbstractFormLoginAuthenticator
 {
+    //TODO: Check how this works
     use TargetPathTrait;
 
     private $entityManager;
@@ -86,7 +87,7 @@ class LoginAuthentificatorAuthenticator extends AbstractFormLoginAuthenticator
         }
 
         // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
-        return new RedirectResponse($this->urlGenerator->generate('app_page_renderpage'));
+        return new RedirectResponse($this->urlGenerator->generate('app_index'));
     }
 
     protected function getLoginUrl()

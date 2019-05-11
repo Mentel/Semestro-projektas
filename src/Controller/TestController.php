@@ -12,11 +12,11 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class TestController extends AbstractController
 {
+    //TODO: redo functions
     /**
-     * @Route("/user/all", name="admin_user
-     * _list")
+     * @Route("/user/list", name="app_user_list")
      */
-    public function index()
+    public function listUsers()
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'User tried to access a page without having ROLE_ADMIN');
         $repository = $this->getDoctrine()->getRepository(User::class)
@@ -35,10 +35,11 @@ class TestController extends AbstractController
         echo "<br>";
         return new Response('nic');
     }
+
     /**
-     * @Route("/admin", name="create_superuser")
+     * @Route("/admin", name="app_create_superuser")
      */
-    public function delete(UserPasswordEncoderInterface $passwordEncoder)
+    public function createAdminAccount(UserPasswordEncoderInterface $passwordEncoder)
     {
         $user = new User();
         // encode the plain password
@@ -55,8 +56,29 @@ class TestController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
         echo 'nice';
-        return $this->render('test/index.html.twig', [
-            'controller_name' => 'TestController',
-        ]);
+        return new Response('nic');
+    }
+
+    //TODO: Check if this actually works
+    /**
+     * @Route("/user/delete/{max}", name="app_user_delete")
+     */
+    public function deleteUser($max)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $repository = $this->getDoctrine()->getRepository(Event::class)
+            ->findAll();
+        foreach($repository as &$a)
+        {
+            $entityManager->remove($a);
+        }
+        $repository = $this->getDoctrine()->getRepository(User::class)
+            ->findAll();
+        foreach($repository as &$a)
+        {
+            $entityManager->remove($a);
+        }
+        $entityManager->flush();
+        return new Response('gz');
     }
 }
