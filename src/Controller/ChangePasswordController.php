@@ -16,11 +16,10 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class ChangePasswordController extends AbstractController
 {
     /**
-     * @Route("/changepassword", name="app_changepassword")
+     * @Route("/settings/changepassword", name="app_changepassword")
      */
     public function changePassword(Request $request, UserPasswordEncoderInterface $passwordEncoder, TokenStorageInterface $tokenStorage): Response
     {
-
         $this->denyAccessUnlessGranted('ROLE_USER');
         $form = $this->createForm(ChangePasswordFormType::class);
         $form->handleRequest($request);
