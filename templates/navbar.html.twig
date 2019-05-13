@@ -13,7 +13,7 @@
         <ul class="navbar-nav ml-auto mr-4">
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><b>{{ app.user.email }}</b></a>
+                    <a class="nav-link" href="/settings"><b>{{ app.user.email }}</b></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/logout">Atsijungti</a>
