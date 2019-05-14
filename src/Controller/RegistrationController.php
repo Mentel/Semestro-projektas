@@ -46,20 +46,11 @@ class RegistrationController extends AbstractController
                     $this->renderView(
                     // templates/emails/registration.html.twig
                         'email/registration.html.twig',
-                        ['name' => $user->getUsername()]
+                        ['code' => $user->getVerify(),
+                            'id' => $user->getId()]
                     ),
                     'text/html'
                 )
-                /*
-                 * If you also want to include a plaintext version of the message
-                ->addPart(
-                    $this->renderView(
-                        'emails/registration.txt.twig',
-                        ['name' => $name]
-                    ),
-                    'text/plain'
-                )
-                */
             ;
 
             $mailer->send($message);

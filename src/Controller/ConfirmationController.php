@@ -10,17 +10,24 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Event;
 use Symfony\Component\Security\Core\Security;
 use App\Form\EventAddFormType;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
 class ConfirmationController extends AbstractController
 {
     /**
-     * @Route("/user/confirm/{i}", name="confirm")
+     * @Route("/user/confirm/{id}/{code}", name="confirm")
      */
-    public function Confirm($i)
+    public function Confirm($id, $code)
     {
-        $user = $this->getUser();
-        if($i === $user->getVerification())
-        return new Response('nic');
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $usr = $entityManager->getRepository(User::class)
+            ->find($id);
+        if ($code === $usr->getVerify()) {
+            $usr->setRoles(['ROLE_USER']);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('app_login');
     }
 }
