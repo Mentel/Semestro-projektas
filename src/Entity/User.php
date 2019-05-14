@@ -47,6 +47,11 @@ class User implements UserInterface
      */
     private $events;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $verify;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
@@ -169,6 +174,18 @@ class User implements UserInterface
                 $event->setHost(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getVerify(): ?string
+    {
+        return $this->verify;
+    }
+
+    public function setVerify(?string $verify): self
+    {
+        $this->verify = $verify;
 
         return $this;
     }
