@@ -21,7 +21,6 @@ use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
 class LoginAuthentificatorAuthenticator extends AbstractFormLoginAuthenticator
 {
-    //TODO: Check how this works
     use TargetPathTrait;
 
     private $entityManager;

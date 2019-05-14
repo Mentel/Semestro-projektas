@@ -12,7 +12,6 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class RegistrationController extends AbstractController
 {
-    //TODO: Check how this works(where does the user name gets set)
     /**
      * @Route("/register", name="app_register")
      */
