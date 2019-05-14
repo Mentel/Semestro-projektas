@@ -3,3 +3,5 @@
 /.idea
 
 /var
+.web-server-pid
+.env
