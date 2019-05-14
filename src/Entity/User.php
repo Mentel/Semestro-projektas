@@ -51,10 +51,16 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $verify;
+  /*
+     * @ORM\ManyToMany(targetEntity="App\Entity\Category", mappedBy="user")
+     */
+    private $categories;
+
 
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -178,6 +184,7 @@ class User implements UserInterface
         return $this;
     }
 
+
     public function getVerify(): ?string
     {
         return $this->verify;
@@ -186,6 +193,32 @@ class User implements UserInterface
     public function setVerify(?string $verify): self
     {
         $this->verify = $verify;
+
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        if ($this->categories->contains($category)) {
+            $this->categories->removeElement($category);
+            $category->removeUser($this);
+        }
+
 
         return $this;
     }
