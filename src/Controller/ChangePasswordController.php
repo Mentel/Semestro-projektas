@@ -18,7 +18,7 @@ class ChangePasswordController extends AbstractController
     /**
      * @Route("/settings/changepassword", name="app_changepassword")
      */
-    public function changePassword(Request $request, UserPasswordEncoderInterface $passwordEncoder, TokenStorageInterface $tokenStorage): Response
+    public function changePassword(Request $request, UserPasswordEncoderInterface $passwordEncoder, TokenStorageInterface $tokenStorage, \Swift_Mailer $mailer): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
         $form = $this->createForm(ChangePasswordFormType::class);
@@ -34,6 +34,20 @@ class ChangePasswordController extends AbstractController
                 $user->setPassword($new_pwd_encoded);
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->flush();
+
+                $message = (new \Swift_Message('Jūsų slaptažodis buvo pakeistas'))
+                    ->setFrom('datadogprojektas@gmail.com')
+                    ->setTo($user->getEmail())
+                    ->setBody(
+                        $this->renderView(
+                            'email/changepassword.html.twig',
+                            ['name' => $user->getEmail()]
+                        ),
+                        'text/html'
+                    );
+
+                $mailer->send($message);
+
                 return $this->redirectToRoute('app_index');
             }
             else
