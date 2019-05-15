@@ -3,8 +3,8 @@
 namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -46,6 +46,17 @@ class EventAddFormType extends AbstractType
                         'minMessage' => 'Minimalus leistinas renginio adreso ilgis: {{ limit }}',
                         'max' => 255,
                         'maxMessage' => 'Maksimalus leistinas renginio adreso ilgis: {{ limit }}',
+                    ]),
+                ]
+            ])
+            ->add("price", MoneyType::class, [
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Įveskite kaina',
+                    ]),
+                    new Length([
+                        'max' => 5,
+                        'maxMessage' => 'Maksimalus leistinas kainos ilgis: {{ limit }}',
                     ]),
                 ]
             ])
