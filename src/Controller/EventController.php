@@ -77,14 +77,15 @@ class EventController extends AbstractController
         $event = $entityManager->getRepository(Event::class)
             ->find($id);
         if($event!=null) {
-            return $this->render('event/detail.html.twig', ['name' => $event->getName(),
+            return $this->render('event/detail.html.twig',
+                ['name' => $event->getName(),
                 'address' => $event->getAddress(),
-                'description' => $event->getAddress(),
+                'description' => $event->getDescription(),
                 'date' => $event->getDate(),
                 'price' => $event->getPrice(),
-                'categories' => $event->getCategories()
+                'categories' => $event->getCategory()
                 ]
-                );
+            );
         }
         return $this->redirectToRoute('app_event_list_paging', array('page' => 1));
     }
