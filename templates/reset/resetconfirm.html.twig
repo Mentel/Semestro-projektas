@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+<h3>Password reset sent!</h3>
+
+An email has been sent to <h3 {{ url('app_mail_confirmation',{id: id, code: verCode} )}}>here</h3>.
+
+{# example, assuming you have a route named "login" #}
+To confirm, go
+
+Thanks!
