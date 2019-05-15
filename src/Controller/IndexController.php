@@ -17,10 +17,12 @@ class IndexController extends AbstractController
     public function renderIndex(Security $security) :Response
     {
         $user=$security->getUser();
-        if($user->getRoles()===['ROLE_VERIFIEDNT']){
-            return $this->render('registration/confirm.html.twig', [
-                'email' => $user->getUsername()
-            ]);
+        if($user != null) {
+            if ($user->getRoles() === ['ROLE_VERIFIEDNT']) {
+                return $this->render('registration/confirm.html.twig', [
+                    'email' => $user->getUsername()
+                ]);
+            }
         }
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'User tried to access a page without having ROLE_USER');
         return $this->render('index.html.twig');
