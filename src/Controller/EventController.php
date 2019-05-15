@@ -57,13 +57,18 @@ class EventController extends AbstractController
      */
     public function listEvents($page)
     {
-        $length = 3;
+        $length = 10;
         $size = $this->getDoctrine()->getRepository(Event::class)->count(array());
         $pageCount = ceil($size / $length);
+        if ($size == 0)
+        {
+            return $this->redirectToRoute('app_index');
+        }
         if ($page < 1 || $page > $pageCount)
         {
             return $this->redirectToRoute('app_event_list_paging', array('page' => 1));
         }
+
         $offset = ($page - 1)* $length;
         $events = $this->getDoctrine()->getRepository(Event::class)->findBy(array(), array('date' => 'DESC'), $length, $offset);
         return $this->render('event/list.html.twig', ['events' => $events, 'pageNumber' => $page, 'pageCount' => $pageCount]);
