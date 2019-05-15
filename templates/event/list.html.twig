@@ -38,5 +38,12 @@
                 </div>
             </div>
         {% endfor %}
+        {% include 'pagination.html.twig' with {
+            currentFilters: { myFilter: {} },
+            currentPage: pageNumber,
+            paginationPath: "app_event_list_paging",
+            lastPage: pageCount,
+            showAlwaysFirstAndLast: true
+        } only %}
     </div>
 {% endblock %}

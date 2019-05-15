@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class EventController extends AbstractController
 {
@@ -39,7 +40,7 @@ class EventController extends AbstractController
             $entityManager->persist($event);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_event_list');
+            return $this->redirectToRoute('app_event_list_paging', array('page' => 1));
         }
 
         return $this->render('event/add.html.twig', [
@@ -52,8 +53,23 @@ class EventController extends AbstractController
      */
     public function listAllEvents()
     {
-        $events = $this->getDoctrine()->getRepository(Event::class)->findAll();
-        return $this->render('event/list.html.twig', ['events' => $events]);
+        return $this->redirectToRoute('app_event_list_paging', array('page' => 1));
+    }
+    /**
+     * @Route("/events/{page}", name="app_event_list_paging")
+     */
+    public function listEvents($page)
+    {
+        $length = 3;
+        $size = $this->getDoctrine()->getRepository(Event::class)->count(array());
+        $pageCount = ceil($size / $length);
+        if ($page < 1 || $page > $pageCount)
+        {
+            return $this->redirectToRoute('app_event_list_paging', array('page' => 1));
+        }
+        $offset = ($page - 1)* $length;
+        $events = $this->getDoctrine()->getRepository(Event::class)->findBy(array(), array('date' => 'DESC'), $length, $offset);
+        return $this->render('event/list.html.twig', ['events' => $events, 'pageNumber' => $page, 'pageCount' => $pageCount]);
     }
     /**
      * @Route("/event/{id}", name="app_event")
