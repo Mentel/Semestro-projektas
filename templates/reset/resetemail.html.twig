@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Slaptažodžio atkūrimas{% endblock %}
+
+{% block body %}
+    <div class="row justify-content-center">
+        <div class="card">
+            <div class="card-body">
+                {{ form_start(resetForm) }}
+                <h1 class="h3 mb-3 mt-3 font-weight-normal">Slaptažodžio atkūrimas</h1>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Elektroninis paštas</label>
+                    {{ form_errors(resetForm.email) }}
+                    {{ form_widget(resetForm.email, {'attr': {'type': 'email', 'class': 'form-control', 'name': 'email', 'id': 'inputEmail', 'aria-describedby': 'emailHelp', 'required': '', 'autofocus': '', 'placeholder': 'Įveskite el.paštą'}}) }}
+                </div>
+
+
+                <div class="row justify-content-center">
+                    <button type="submit" class="btn btn-success">Siūsti</button>
+                </div>
+                {{ form_end(resetForm) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

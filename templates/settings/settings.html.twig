@@ -1,7 +1,17 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Nustatymai{% endblock %}
+
 {% block body %}
-    <h1>Nustatymai</h1>
-    <a class="nav-link" href="/settings/changepassword">Keisti slaptažodį</a>
-    <a class="nav-link" href="/settings/categories">Sekamų kategorijų valdymas</a>
+    <div class="row justify-content-center pt-3">
+        <div class="card" style="max-width: 500px">
+            <div class="card-body">
+                <div class="row justify-content-center">
+                    <h2 class="mb-4">Nustatymai</h2>
+                </div>
+                <h5 class="ml-3"><a href="/settings/changepassword">Keisti slaptažodį</a></h5>
+                <h5 class="ml-3"><a href="/settings/categories">Sekamų kategorijų valdymas</a></h5>
+            </div>
+        </div>
+    </div>
 {% endblock %}
