@@ -53,7 +53,9 @@ class RegistrationController extends AbstractController
             ;
             $mailer->send($message);
 
-            return $this->redirectToRoute('app_login');
+            return $this->render('registration/confirm.html.twig', [
+                'email' => $user->getEmail()
+            ]);
         }
 
         return $this->render('registration/register.html.twig', [
@@ -65,14 +67,15 @@ class RegistrationController extends AbstractController
      */
     public function Confirm($id, $code)
     {
-
         $entityManager = $this->getDoctrine()->getManager();
         $usr = $entityManager->getRepository(User::class)
             ->find($id);
-
-        if ($code === $usr->getVerify()) {
-            $usr->setRoles(['ROLE_USER']);
-            $entityManager->flush();
+        if($usr->getVerify()!='NULL') {
+            if ($code === $usr->getVerify()) {
+                $usr->setRoles(['ROLE_USER']);
+                $usr->setCode('NULL');
+                $entityManager->flush();
+            }
         }
         return $this->redirectToRoute('app_login');
     }
