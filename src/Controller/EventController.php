@@ -36,6 +36,7 @@ class EventController extends AbstractController
             $event->setAddress($data['address']);
             $event->setPrice($data['price']);
             $event->setDescription($data['description']);
+            $event->setPrice(0);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($event);
@@ -75,10 +76,20 @@ class EventController extends AbstractController
     /**
      * @Route("/event/{id}", name="app_event")
      */
-    public function eventView()
+    public function eventView($id)
     {
-        $events = $this->getDoctrine()->getRepository(Event::class)->findAll();
-        return $this->render('event/list.html.twig', ['events' => $events]);
+        $entityManager = $this->getDoctrine()->getManager();
+        $event = $entityManager->getRepository(Event::class)
+            ->find($id);
+        if($event!=null) {
+            return $this->render('event/detail.html.twig', ['name' => $event->getName(),
+                'address' => $event->getAddress(),
+                'description' => $event->getAddress(),
+                'date' => $event->getDate(),
+                'price' => $event->getPrice()]
+                );
+        }
+        return $this->redirectToRoute('app_event_list_paging', array('page' => 1));
     }
 
 }
