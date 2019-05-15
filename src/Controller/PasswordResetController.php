@@ -33,7 +33,7 @@ class PasswordResetController extends AbstractController
                 $usr->setVerify($s);
                 $entityManager->flush();
 
-                $message = (new \Swift_Message('Hello Email'))
+                $message = (new \Swift_Message('Password reset'))
                     ->setFrom('send@example.com')
                     ->setTo($usr->getEmail())
                     ->setBody(
@@ -56,6 +56,9 @@ class PasswordResetController extends AbstractController
                 return new Response('nerastas email');
             }
         }
+        return $this->render('reset/resetemail.html.twig', [
+            'resetForm' => $form->createView(),
+        ]);
     }
     /**
      * @Route("/settings/resetemail/{id}/{code}", name="app_reset")
@@ -88,6 +91,9 @@ class PasswordResetController extends AbstractController
 
                         return new Response('pakeista');
                 }
+                return $this->render('reset/resetpassword.html.twig', [
+                    'resetForm' => $form->createView(),
+                ]);
             }
             else{
 
