@@ -49,11 +49,6 @@ class Event
      */
     private $category;
 
-    /**
-     * @ORM\Column(type="float")
-     */
-    private $price;
-
     public function __construct()
     {
         $this->category = new ArrayCollection();
@@ -148,18 +143,6 @@ class Event
             $this->category->removeElement($category);
             $category->removeEvent($this);
         }
-
-        return $this;
-    }
-
-    public function getPrice(): ?float
-    {
-        return $this->price;
-    }
-
-    public function setPrice(float $price): self
-    {
-        $this->price = $price;
 
         return $this;
     }
