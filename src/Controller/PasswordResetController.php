@@ -58,7 +58,7 @@ class PasswordResetController extends AbstractController
         }
     }
     /**
-     * @Route("/settings/resetemail/{id}/{code}", name="app_reset_send")
+     * @Route("/settings/resetemail/{id}/{code}", name="app_reset")
      */
     public function resetEmail(Request $request, $id, $code, UserPasswordEncoderInterface $passwordEncoder, \Swift_Mailer $mailer): Response
     {
