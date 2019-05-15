@@ -16,4 +16,12 @@ class SettingsController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_USER');
         return $this->render('settings/settings.html.twig');
     }
+    /**
+     * @Route("/settings/admin", name="app_adminsettings")
+     */
+    public function adminSettings()
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        return $this->render('settings/adminsettings.html.twig');
+    }
 }

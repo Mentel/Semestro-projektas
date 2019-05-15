@@ -12,6 +12,11 @@
         </ul>
         <ul class="navbar-nav ml-auto mr-4">
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/settings/admin">Admin įrankiai</a>
+                    </li>
+                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link" href="/settings"><b>{{ app.user.email }}</b></a>
                 </li>
