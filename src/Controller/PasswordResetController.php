@@ -20,16 +20,24 @@ class PasswordResetController extends AbstractController
      */
     public function sendResetEmail(Request $request, TokenStorageInterface $tokenStorage, \Swift_Mailer $mailer): Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $usr = $entityManager->getRepository(User::class)
-            ->findEmail();
-        if ($usr!=null){
-            if ($usr->getVerify() != 'NULL') {
-                if ($code === $usr->getVerify()) {
-                    $usr->setRoles(['ROLE_USER']);
-                    $usr->setVerify('NULL');
-                    $entityManager->flush();
-                }
+        $form = $this->createForm(ResetFormType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $usr = $entityManager->getRepository(User::class)
+                ->findOneBy(['email' => $data['email']]);
+            if ($usr != null) {
+                $s = substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 5)), 0, 5);
+                $usr->setVerify($s);
+                $entityManager->flush();
+
+
+                return new Response('issiusta');
+            }
+            else{
+                return new Response('nerastas email');
             }
         }
     }

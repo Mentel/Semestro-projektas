@@ -24,7 +24,6 @@ class IndexController extends AbstractController
                 ]);
             }
         }
-        $this->denyAccessUnlessGranted('ROLE_USER', null, 'User tried to access a page without having ROLE_USER');
         return $this->render('index.html.twig');
     }
 }
