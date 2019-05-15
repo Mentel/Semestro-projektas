@@ -86,7 +86,7 @@ class EventController extends AbstractController
                 'description' => $event->getAddress(),
                 'date' => $event->getDate(),
                 'price' => $event->getPrice(),
-                'categories' => $event->getCategories()
+                'categories' => $event->getCategory()
                 ]
                 );
         }
