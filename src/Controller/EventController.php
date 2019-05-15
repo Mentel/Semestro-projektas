@@ -85,7 +85,9 @@ class EventController extends AbstractController
                 'address' => $event->getAddress(),
                 'description' => $event->getAddress(),
                 'date' => $event->getDate(),
-                'price' => $event->getPrice()]
+                'price' => $event->getPrice(),
+                'categories' => $event->getCaregories()
+                ]
                 );
         }
         return $this->redirectToRoute('app_event_list_paging', array('page' => 1));
