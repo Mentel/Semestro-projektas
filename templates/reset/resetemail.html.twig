@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Slaptazodzio atnaujinimas{% endblock %}
+{% block title %}Slaptažodžio atkūrimas{% endblock %}
 
 {% block body %}
     <div class="row justify-content-center">
         <div class="card">
             <div class="card-body">
                 {{ form_start(resetForm) }}
-                <h1 class="h3 mb-3 mt-3 font-weight-normal">Slaptazodzio atnaujinimas</h1>
+                <h1 class="h3 mb-3 mt-3 font-weight-normal">Slaptažodžio atkūrimas</h1>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Elektroninis paštas</label>
                     {{ form_errors(resetForm.email) }}
@@ -16,7 +16,7 @@
 
 
                 <div class="row justify-content-center">
-                    <button type="submit" class="btn btn-success">Siusti</button>
+                    <button type="submit" class="btn btn-success">Siūsti</button>
                 </div>
                 {{ form_end(resetForm) }}
             </div>
