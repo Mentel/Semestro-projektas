@@ -70,11 +70,13 @@ class RegistrationController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $usr = $entityManager->getRepository(User::class)
             ->find($id);
-        if($usr->getVerify()!='NULL') {
-            if ($code === $usr->getVerify()) {
-                $usr->setRoles(['ROLE_USER']);
-                $usr->setVerify('NULL');
-                $entityManager->flush();
+        if ($usr!=null){
+            if ($usr->getVerify() != 'NULL') {
+                if ($code === $usr->getVerify()) {
+                    $usr->setRoles(['ROLE_USER']);
+                    $usr->setVerify('NULL');
+                    $entityManager->flush();
+                }
             }
         }
         return $this->redirectToRoute('app_login');
