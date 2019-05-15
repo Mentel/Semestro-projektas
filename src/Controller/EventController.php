@@ -34,6 +34,7 @@ class EventController extends AbstractController
             $event->setName($data['name']);
             $event->setDate($data['date']);
             $event->setAddress($data['address']);
+            $event->setPrice($data['price']);
             $event->setDescription($data['description']);
 
             $entityManager = $this->getDoctrine()->getManager();

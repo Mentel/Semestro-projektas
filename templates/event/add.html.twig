@@ -29,6 +29,12 @@
             </div>
 
             <div class="form-group">
+                <label for="price">Kaina</label>
+                {{ form_errors(eventAddForm.price) }}
+                {{ form_widget(eventAddForm.price, {'attr': {'type': 'text', 'class': 'form-control', 'name': 'price', 'id': 'price', 'required': '', 'placeholder': 'Kaina'}}) }}
+            </div>
+
+            <div class="form-group">
                 <label for="description">Aprašymas</label>
                 {{ form_errors(eventAddForm.description) }}
                 {{ form_widget(eventAddForm.description, {'attr': {'type': 'text', 'class': 'form-control', 'name': 'description', 'id': 'description', 'required': '', 'placeholder': 'Renginio aprašymas'}}) }}
