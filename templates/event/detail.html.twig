@@ -1,1 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Renginių sąrašas{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="mb-4">Renginiai</h1>
+        {% for event in events %}
+            <div class="card mb-3" style="max-width: 1000px; min-width: 1000px">
+                <div class="card-body p-2">
+                    <div class="row">
+                        <div class="col-3">
+                            <img src="{{ asset('images/placeholder.png') }}">
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <div class="col">
+                                    <a href="#"><h2><div class="text-truncate" style="max-width: 700px">{{ event.name }}</div></h2></a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="ml-4 col-3 p-0">
+                                    <h5>{{ event.date.format('Y-m-d H:i') }}</h5>
+                                </div>
+                                <div class="col p-0">
+                                    <h5>{{ event.address }}</h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col ml-2">
+                                    <div class="text-justify" style="max-width: 680px">
+                                        {{ event.description[:450] }}...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
 
