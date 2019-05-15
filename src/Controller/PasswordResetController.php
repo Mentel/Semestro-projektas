@@ -60,33 +60,47 @@ class PasswordResetController extends AbstractController
     /**
      * @Route("/settings/resetemail/{id}/{code}", name="app_reset_send")
      */
-    public function resetEmail(Request $request, $id, $code, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function resetEmail(Request $request, $id, $code, UserPasswordEncoderInterface $passwordEncoder, \Swift_Mailer $mailer): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
+        $usr = new User();
         $usr = $entityManager->getRepository(User::class)
             ->find($id);
 
 
         if($usr != null) {
-            $form = $this->createForm(ResetNewFormType::class);
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
-                $data = $form->getData();
+            if($usr->getVerify()===$code && $code != 'NULL') {
+                $form = $this->createForm(ResetNewFormType::class);
+                $form->handleRequest($request);
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $data = $form->getData();
 
-                if ($usr != null)
-                if(true){
-                    $usr->setVerify('NULL');
-                    $usr->setPassword(
-                        $passwordEncoder->encodePassword(
-                            $usr,
-                            $form->get('plainPassword')->getData()
-                        )
-                    );
-                    $entityManager->flush();
+                        $usr->setVerify('NULL');
+                        $usr->setPassword(
+                            $passwordEncoder->encodePassword(
+                                $usr,
+                                $form->get('plainPassword')->getData()
+                            )
+                        );
+                        $entityManager->flush();
 
 
-                    return new Response('pakeista');
+                        return new Response('pakeista');
                 }
+            }
+            else{
+                $message = (new \Swift_Message('Nepavykes bandymas pakeisti slaptazodi'))
+                    ->setFrom('send@example.com')
+                    ->setTo($usr->getEmail())
+                    ->setBody(
+                        $this->renderView(
+                        // templates/emails/registration.html.twig
+                            'email/failedattempt.html.twig'
+                        ),
+                        'text/html'
+                    )
+                ;
+                $mailer->send($message);
             }
         }
         return $this->redirectToRoute('app_login');
