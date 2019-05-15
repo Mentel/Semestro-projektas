@@ -1,26 +1,31 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Kategorijų tvarkymas{% endblock %}
+{% block title %}Kategorijų prenumeravimas{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <h1 class="mb-4">Kategorijos</h1>
-        {% for category in categories %}
-        <div class="row">
-            <div class="col">
-            {{ category.name }}
+    <div class="row justify-content-center pt-3">
+        <div class="card" style="min-width: 400px">
+            <div class="card-body">
+                <div class="row justify-content-center">
+                    <h2 class="mb-4">Kategorijos</h2>
+                </div>
+                {% for category in categories %}
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="ml-3">{{ category.name }}</h5>
+                        </div>
+                        {% if category in subscribed %}
+                            <div class="col">
+                                <h6><a href="/settings/category/unsubscribe/{{ category.id }}">Naikinti prenumeratą</a></h6>
+                            </div>
+                        {% else %}
+                            <div class="col">
+                                <h6><a href="/settings/category/subscribe/{{ category.id }}">Prenumeruoti</a></h6>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
             </div>
-            {% if category in subscribed %}
-                <div class="col">
-                    <a class="nav-link" href="/settings/category/unsubscribe/{{ category.id }}">Naikinti prenumeratą</a>
-                </div>
-            {% else %}
-                <div class="col">
-                    <a class="nav-link" href="/settings/category/subscribe/{{ category.id }}">Prenumeruoti</a>
-                </div>
-            {% endif %}
-
         </div>
-        {% endfor %}
     </div>
 {% endblock %}
