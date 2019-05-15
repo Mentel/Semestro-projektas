@@ -1,8 +1,25 @@
-<h3>You did it! You registered!</h3>
+{% extends 'base.html.twig' %}
 
-You need to confirm your email
+{% block title %}Slaptazodzio atnaujinimas{% endblock %}
 
-{# example, assuming you have a route named "login" #}
-To confirm, go <a href="{{ url('app_mail_confirmation',{id: id, code: verCode} )}}">here</a>.
+{% block body %}
+    <div class="row justify-content-center">
+        <div class="card">
+            <div class="card-body">
+                {{ form_start(resetForm) }}
+                <h1 class="h3 mb-3 mt-3 font-weight-normal">Slaptazodzio atnaujinimas</h1>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Elektroninis paštas</label>
+                    {{ form_errors(resetForm.email) }}
+                    {{ form_widget(resetForm.email, {'attr': {'type': 'email', 'class': 'form-control', 'name': 'email', 'id': 'inputEmail', 'aria-describedby': 'emailHelp', 'required': '', 'autofocus': '', 'placeholder': 'Įveskite el.paštą'}}) }}
+                </div>
 
-Thanks!
+
+                <div class="row justify-content-center">
+                    <button type="submit" class="btn btn-success">Siusti</button>
+                </div>
+                {{ form_end(resetForm) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
