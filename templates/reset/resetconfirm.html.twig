@@ -1,10 +1,6 @@
 {% extends 'base.html.twig' %}
 
-<h3>Password reset sent!</h3>
+<h3>Slaptažodžio atkūrimas išsiūstas!</h3>
 
-An email has been sent to <h3 {{ url('app_mail_confirmation',{id: id, code: verCode} )}}>here</h3>.
+Jums išsiuntėmė laiška į <h3>{{email}} </h3>, kuriame rasite, kaip atkurti jūsų slaptąžodį.
 
-{# example, assuming you have a route named "login" #}
-To confirm, go
-
-Thanks!

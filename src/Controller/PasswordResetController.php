@@ -48,8 +48,8 @@ class PasswordResetController extends AbstractController
                 ;
                 $mailer->send($message);
 
-                return $this->render('reset/emailsent.html.twig', [
-                    'email' => $user->getEmail()
+                return $this->render('reset/resetconfirm.html.twig', [
+                    'email' => $usr->getEmail()
                 ]);
             }
             else{
