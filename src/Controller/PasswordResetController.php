@@ -69,9 +69,10 @@ class PasswordResetController extends AbstractController
 
 
         if($usr != null) {
+            $form = $this->createForm(ResetNewFormType::class);
+            $form->handleRequest($request);
             if($usr->getVerify()===$code && $code != 'NULL') {
-                $form = $this->createForm(ResetNewFormType::class);
-                $form->handleRequest($request);
+
                 if ($form->isSubmitted() && $form->isValid()) {
                     $data = $form->getData();
 
@@ -89,6 +90,15 @@ class PasswordResetController extends AbstractController
                 }
             }
             else{
+
+                $usr->setVerify('NULL');
+                $usr->setPassword(
+                    $passwordEncoder->encodePassword(
+                        $usr,
+                        $form->get('plainPassword')->getData()
+                    )
+                );
+                $entityManager->flush();
                 $message = (new \Swift_Message('Nepavykes bandymas pakeisti slaptazodi'))
                     ->setFrom('send@example.com')
                     ->setTo($usr->getEmail())
