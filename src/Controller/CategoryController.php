@@ -43,7 +43,7 @@ class CategoryController extends AbstractController
     /**
      * @Route("/settings/category/subscribe/{id}", name="app_categorysubscribe")
      */
-    public function CategorySubscribe($id, TokenStorageInterface $tokenStorage): Response
+    public function CategorySubscribe($id, TokenStorageInterface $tokenStorage, \Swift_Mailer $mailer): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
         $user = $tokenStorage->getToken()->getUser();
@@ -51,9 +51,24 @@ class CategoryController extends AbstractController
             ->getRepository(Category::class)
             ->find($id);
         if ($category != null) {
+
             $user->addCategory($category);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
+
+            $message = (new \Swift_Message('Jūs prenumeravote naują kategoriją.'))
+                ->setFrom('example@gmail.com')
+                ->setTo($user->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'email/subscribedcategory.html.twig',
+                        ['categoryName' => $category->getName(), 'userName' => $user->getEmail()]
+                    ),
+                    'text/html'
+                );
+
+            $mailer->send($message);
+
         }
         return $this->redirectToRoute('app_categorylist');
     }
