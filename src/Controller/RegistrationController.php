@@ -63,7 +63,7 @@ class RegistrationController extends AbstractController
         ]);
     }
     /**
-     * @Route("/register/confirm/{id}/{code}", name="Email_Confirmation")
+     * @Route("/register/confirm/{id}/{code}", name="app_mail_confirmation")
      */
     public function Confirm($id, $code)
     {
@@ -73,7 +73,7 @@ class RegistrationController extends AbstractController
         if($usr->getVerify()!='NULL') {
             if ($code === $usr->getVerify()) {
                 $usr->setRoles(['ROLE_USER']);
-                $usr->setCode('NULL');
+                $usr->setVerify('NULL');
                 $entityManager->flush();
             }
         }
