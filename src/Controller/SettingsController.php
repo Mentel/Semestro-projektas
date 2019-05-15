@@ -14,6 +14,6 @@ class SettingsController extends AbstractController
     public function settings()
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
-        return $this->render('settings/settings.html.twig');
+        return $this->render('settings.html.twig');
     }
 }
