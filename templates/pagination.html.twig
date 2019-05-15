@@ -19,42 +19,63 @@
 
         <div class="pagination">
             {% if currentPage > 1 %}
-                <a href="{{ path(paginationPath, currentFilters|merge({page: currentPage-1})) }}">Previous</a>
-
+                <li class="page-item">
+                    <a class="page-link" href="{{ path(paginationPath, currentFilters|merge({page: currentPage-1})) }}" tabindex="-1">Ankstesnis</a>
+                </li>
                 {% for i in range(1, extremePagesLimit) if ( i < currentPage - nearbyPagesLimit ) %}
-                    <a href="{{ path(paginationPath, {page: i}) }}">{{ i }}</a>
+                    <li class="page-item">
+                        <a class="page-link" href="{{ path(paginationPath, {page: i}) }}" tabindex="-1">{{ i }}</a>
+                    </li>
                 {% endfor %}
 
                 {% if extremePagesLimit + 1 < currentPage - nearbyPagesLimit %}
-                    <span class="sep-dots">...</span>
+                    <li class="page-item">
+                        <a class="page-link" tabindex="-1">...</a>
+                    </li>
                 {% endif %}
 
                 {% for i in range(currentPage-nearbyPagesLimit, currentPage-1) if ( i > 0 ) %}
-                    <a href="{{ path(paginationPath, {page: i}) }}">{{ i }}</a>
+                    <li class="page-item">
+                        <a class="page-link" href="{{ path(paginationPath, {page: i}) }}" tabindex="-1">{{ i }}</a>
+                    </li>
                 {% endfor %}
             {% elseif showAlwaysFirstAndLast %}
-                <span class="disabled">Previous</span>
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Ankstesnis</a>
+                </li>
             {% endif %}
 
-            <a href="{{ path(paginationPath, {page: currentPage}) }}"
-               class="active"><b>{{ currentPage }}</b></a>
+            <li class="page-item active">
+                <a class="page-link" href="{{ path(paginationPath, {page: currentPage}) }}" tabindex="-1">{{ currentPage }}</a>
+            </li>
 
             {% if currentPage < lastPage %}
                 {% for i in range(currentPage+1, currentPage + nearbyPagesLimit) if ( i <= lastPage ) %}
-                    <a href="{{ path(paginationPath, {page: i}) }}">{{ i }}</a>
+                    <li class="page-item">
+                        <a class="page-link" href="{{ path(paginationPath, {page: i}) }}" tabindex="-1">{{ i }}</a>
+                    </li>
                 {% endfor %}
 
                 {% if  (lastPage - extremePagesLimit) > (currentPage + nearbyPagesLimit) %}
-                    <span class="sep-dots">...</span>
+                    <li class="page-item">
+                        <a class="page-link" tabindex="-1">...</a>
+                    </li>
                 {% endif %}
 
                 {% for i in range(lastPage - extremePagesLimit+1, lastPage) if ( i > currentPage + nearbyPagesLimit ) %}
-                    <a href="{{ path(paginationPath, {page: i}) }}">{{ i }}</a>
+                    <li class="page-item">
+                        <a class="page-link" href="{{ path(paginationPath, {page: i}) }}" tabindex="-1">{{ i }}</a>
+                    </li>
                 {% endfor %}
 
-                <a href="{{ path(paginationPath, {page: lastPage+1}) }}">Next</a>
+                <li class="page-item">
+                    <a class="page-link" href="{{ path(paginationPath, {page: currentPage+1}) }}" tabindex="-1">Sekantis</a>
+                </li>
+
             {% elseif showAlwaysFirstAndLast %}
-                <span class="disabled">Next</span>
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Sekantis</a>
+                </li>
             {% endif %}
         </div>
     {% endif %}
