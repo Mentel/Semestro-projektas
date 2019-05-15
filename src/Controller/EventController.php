@@ -57,7 +57,7 @@ class EventController extends AbstractController
      */
     public function listEvents($page)
     {
-        $length = 10;
+        $length = 5;
         $size = $this->getDoctrine()->getRepository(Event::class)->count(array());
         $pageCount = ceil($size / $length);
         if ($size == 0)
