@@ -88,8 +88,7 @@ class PasswordResetController extends AbstractController
                         );
                         $entityManager->flush();
 
-
-                        return new Response('pakeista');
+                        return $this->render('reset/resetdone.html.twig');
                 }
                 return $this->render('reset/resetpassword.html.twig', [
                     'resetForm' => $form->createView(),
