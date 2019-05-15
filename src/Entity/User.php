@@ -193,6 +193,7 @@ class User implements UserInterface
     public function setVerify(?string $verify): self
     {
         $this->verify = $verify;
+    }
 
     /**
      * @return Collection|Category[]
