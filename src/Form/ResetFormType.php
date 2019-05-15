@@ -28,22 +28,6 @@ class ResetFormType extends AbstractType
                     'max' => 255,
                 ])]
             ])
-            ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
-                'mapped' => false,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Įveskite slaptazodi',
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Slaptažodis turi turėti bent {{ limit }} simbolius',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
-                ],
-            ])
         ;
     }
 
