@@ -28,7 +28,7 @@
                     </td>
                     <td>{{ user.createdAt.format('Y-m-d H:i') }}</td>
                     <td>{{ user.verify }}</td>
-                    <td><a href="{{ url('app_user_delete',{id: user.id}) }}">Ištrinti</a></td>
+                    <td><a onclick="return confirm('Tikrai ištrinti?');" href="{{ url('app_user_delete',{id: user.id}) }}">Ištrinti</a></td>
                 </tr>
             {% endfor %}
             </tbody>
