@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class TestController extends AbstractController
 {
+    //TODO: Remove in production
     /**
      * @Route("/admin", name="app_create_superuser")
      */
