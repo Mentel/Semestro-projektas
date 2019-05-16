@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\EventAddFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Event;
 use Symfony\Component\HttpFoundation\Request;
@@ -92,6 +94,23 @@ class EventController extends AbstractController
                 ]
             );
         }
+        return $this->redirectToRoute('app_event_list_paging', array('page' => 1));
+    }
+    /**
+     * @Route("/event/delete/{id}", name="app_event_delete")
+     */
+    public function eventDelete($id)
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'User tried to access a page without having ROLE_ADMIN');
+        
+        $entityManager = $this->getDoctrine()->getManager();
+        $event = $entityManager->getRepository(Event::class)
+            ->find($id);
+        if($event != null){
+            $entityManager->remove($event);
+        }
+        $entityManager->flush();
+
         return $this->redirectToRoute('app_event_list_paging', array('page' => 1));
     }
 
