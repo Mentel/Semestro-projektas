@@ -33,8 +33,8 @@ class PasswordResetController extends AbstractController
                 $usr->setVerify($s);
                 $entityManager->flush();
 
-                $message = (new \Swift_Message('Password reset'))
-                    ->setFrom('send@example.com')
+                $message = (new \Swift_Message('Jūsų slaptažodis buvo atstatytas'))
+                    ->setFrom('datadogprojektas@gmail.com')
                     ->setTo($usr->getEmail())
                     ->setBody(
                         $this->renderView(
@@ -104,8 +104,8 @@ class PasswordResetController extends AbstractController
                     )
                 );
                 $entityManager->flush();
-                $message = (new \Swift_Message('Nepavykes bandymas pakeisti slaptazodi'))
-                    ->setFrom('send@example.com')
+                $message = (new \Swift_Message('Nepavykęs bandymas pakeisti slaptažodį'))
+                    ->setFrom('datadogprojektas@gmail.com')
                     ->setTo($usr->getEmail())
                     ->setBody(
                         $this->renderView(

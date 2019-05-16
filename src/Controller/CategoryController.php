@@ -80,8 +80,8 @@ class CategoryController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
 
-            $message = (new \Swift_Message('Jūs prenumeravote naują kategoriją.'))
-                ->setFrom('example@gmail.com')
+            $message = (new \Swift_Message('Jūs prenumeravote naują kategoriją'))
+                ->setFrom('datadogprojektas@gmail.com')
                 ->setTo($user->getEmail())
                 ->setBody(
                     $this->renderView(
