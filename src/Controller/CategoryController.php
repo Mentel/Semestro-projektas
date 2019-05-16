@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Form\ChangePasswordFormType;
 use App\Form\CreateCategoryFormType;
+use App\Form\UpdateCategoryFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,6 +39,29 @@ class CategoryController extends AbstractController
 
         return $this->render('settings/createcategory.html.twig', [
             'createCategory' => $form->createView(),
+        ]);
+    }
+    /**
+     * @Route("/settings/category/updatecategory", name="app_updatecategory")
+     */
+    public function UpdateCategory(Request $request): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $form = $this->createForm(UpdateCategoryFormType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // encode the plain password
+            $entityManager = $this->getDoctrine()->getManager();
+            $category = $entityManager->getRepository(Category::class)->find($form->get('name')->getData()->getId());
+            $newName = $form->get('newName')->getData();
+            $category->setName($newName);
+            $entityManager->persist($category);
+            $entityManager->flush();
+            return $this->redirectToRoute('app_updatecategory');
+        }
+
+        return $this->render('settings/updatecategory.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
     /**
