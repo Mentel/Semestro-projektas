@@ -35,11 +35,15 @@ class CategoryController extends AbstractController
             $category->setName($data['categoryName']);
             $entityManager->persist($category);
             $entityManager->flush();
-            return $this->redirectToRoute('app_index');
+            return $this->render('settings/createcategory.html.twig', [
+                'createCategory' => $form->createView(),
+                'message' => "Kategorija ".$data['categoryName']." sukurta",
+            ]);
         }
 
         return $this->render('settings/createcategory.html.twig', [
             'createCategory' => $form->createView(),
+            'message' => "",
         ]);
     }
     /**
@@ -54,15 +58,20 @@ class CategoryController extends AbstractController
             // encode the plain password
             $entityManager = $this->getDoctrine()->getManager();
             $category = $entityManager->getRepository(Category::class)->find($form->get('name')->getData()->getId());
+            $oldName = $category->getName();
             $newName = $form->get('newName')->getData();
             $category->setName($newName);
             $entityManager->persist($category);
             $entityManager->flush();
-            return $this->redirectToRoute('app_updatecategory');
+            return $this->render('settings/updatecategory.html.twig', [
+                'form' => $form->createView(),
+                'message' => "Kategorija ".$oldName." pervadinta į ".$newName,
+            ]);
         }
 
         return $this->render('settings/updatecategory.html.twig', [
             'form' => $form->createView(),
+            'message' => "",
         ]);
     }
     /**
