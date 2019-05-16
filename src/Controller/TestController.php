@@ -79,24 +79,4 @@ class TestController extends AbstractController
         $entityManager->flush();
         return new Response('gz');
     }
-
-    /**
-     * @Route("/send", name="app_send_email")
-     */
-    public function testEmail(\Swift_Mailer $mailer)
-    {
-        $message = (new \Swift_Message('Email test'))
-            ->setFrom('datadogprojektas@gmail.com')
-            ->setTo('tadas357@gmail.com')
-            ->setBody(
-                $this->renderView(
-                    'email/test.html.twig'
-                ),
-                'text/html'
-            );
-
-        $mailer->send($message);
-
-        return new Response('gz');
-    }
 }
