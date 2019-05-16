@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Form\ChangePasswordFormType;
 use App\Form\CreateCategoryFormType;
 use App\Form\UpdateCategoryFormType;
+use App\Form\DeleteCategoryFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,11 +35,15 @@ class CategoryController extends AbstractController
             $category->setName($data['categoryName']);
             $entityManager->persist($category);
             $entityManager->flush();
-            return $this->redirectToRoute('app_index');
+            return $this->render('settings/createcategory.html.twig', [
+                'createCategory' => $form->createView(),
+                'message' => "Kategorija ".$data['categoryName']." sukurta",
+            ]);
         }
 
         return $this->render('settings/createcategory.html.twig', [
             'createCategory' => $form->createView(),
+            'message' => "",
         ]);
     }
     /**
@@ -53,15 +58,55 @@ class CategoryController extends AbstractController
             // encode the plain password
             $entityManager = $this->getDoctrine()->getManager();
             $category = $entityManager->getRepository(Category::class)->find($form->get('name')->getData()->getId());
+            $oldName = $category->getName();
             $newName = $form->get('newName')->getData();
             $category->setName($newName);
             $entityManager->persist($category);
             $entityManager->flush();
-            return $this->redirectToRoute('app_updatecategory');
+            return $this->render('settings/updatecategory.html.twig', [
+                'form' => $form->createView(),
+                'message' => "Kategorija ".$oldName." pervadinta į ".$newName,
+            ]);
         }
 
         return $this->render('settings/updatecategory.html.twig', [
             'form' => $form->createView(),
+            'message' => "",
+        ]);
+    }
+    /**
+     * @Route("/settings/category/deletecategory", name="app_deletecategory")
+     */
+    public function DeleteCategory(Request $request): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $form = $this->createForm(DeleteCategoryFormType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // encode the plain password
+            $entityManager = $this->getDoctrine()->getManager();
+            $category = $entityManager->getRepository(Category::class)->find($form->get('name')->getData()->getId());
+            $events = $category->getEvents();
+            foreach ($events as $event)
+            {
+                $event->removeCategory($category);
+            }
+            $users = $category->getUser();
+            foreach($users as $user)
+            {
+                $category->removeUser($user);
+            }
+            $entityManager->remove($category);
+            $entityManager->flush();
+            return $this->render('settings/removecategory.html.twig', [
+                'form' => $form->createView(),
+                'message' => "Kategorija ".$category->getName()." pašalinta",
+            ]);
+        }
+
+        return $this->render('settings/removecategory.html.twig', [
+            'form' => $form->createView(),
+            'message' => "",
         ]);
     }
     /**
