@@ -38,8 +38,8 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $message = (new \Swift_Message('Hello Email'))
-                ->setFrom('send@example.com')
+            $message = (new \Swift_Message('Sveikiname prisiregistravus prie Renginių kalendoriaus'))
+                ->setFrom('datadogprojektas@gmail.com')
                 ->setTo($user->getEmail())
                 ->setBody(
                     $this->renderView(
