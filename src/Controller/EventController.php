@@ -28,12 +28,22 @@ class EventController extends AbstractController
 
             $event = new Event();
 
+            if(count($data['categories']) < 1){
+                return $this->render('event/add.html.twig', [
+                    'eventAddForm' => $form->createView(),
+                    'message' => 'Pasirinkite bent vieną kategoriją'
+                ]);
+            }
+
             $event->setHost($user);
             $event->setName($data['name']);
             $event->setDate($data['date']);
             $event->setAddress($data['address']);
             $event->setPrice($data['price']);
             $event->setDescription($data['description']);
+            foreach ($data['categories'] as $category){
+                $event->addCategory($category);
+            }
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($event);
@@ -43,7 +53,8 @@ class EventController extends AbstractController
         }
 
         return $this->render('event/add.html.twig', [
-            'eventAddForm' => $form->createView()
+            'eventAddForm' => $form->createView(),
+            'message' => ''
         ]);
     }
 

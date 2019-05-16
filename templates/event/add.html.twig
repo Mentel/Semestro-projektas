@@ -67,6 +67,11 @@
                 <div class="col-5">
                     <div class="form-group form-check">
                         <label for="description">Kategorijos</label>
+                        {% if message|length > 0 %}
+                            <div class="alert alert-danger">
+                                {{ message }}
+                            </div>
+                        {% endif %}
                         {% if form_errors(eventAddForm.categories)|length > 0 %}
                             <div class="alert alert-danger">
                                 {{ form_errors(eventAddForm.categories) }}
