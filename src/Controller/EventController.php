@@ -90,7 +90,8 @@ class EventController extends AbstractController
                 'description' => $event->getDescription(),
                 'date' => $event->getDate(),
                 'price' => $event->getPrice(),
-                'categories' => $event->getCategory()
+                'categories' => $event->getCategory(),
+                'id' => $id
                 ]
             );
         }
@@ -102,7 +103,7 @@ class EventController extends AbstractController
     public function eventDelete($id)
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'User tried to access a page without having ROLE_ADMIN');
-        
+
         $entityManager = $this->getDoctrine()->getManager();
         $event = $entityManager->getRepository(Event::class)
             ->find($id);
