@@ -52,6 +52,7 @@ class EventController extends AbstractController
      */
     public function listAllEvents()
     {
+
         return $this->redirectToRoute('app_event_list_paging', array('page' => 1));
     }
     /**
