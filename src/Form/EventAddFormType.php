@@ -85,7 +85,7 @@ class EventAddFormType extends AbstractType
                 'class' => Category::class,
                 'choice_label' => 'name',
                 'multiple' => true,
-                'expanded' => true,
+                'expanded' => false,
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Pasirinkite bent vieną kategoriją',
