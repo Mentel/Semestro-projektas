@@ -90,8 +90,14 @@ class EventController extends AbstractController
      */
     public function listAllEvents()
     {
-
-        return $this->redirectToRoute('app_event_list_paging', array('page' => 1));
+        $price=100;
+        $start=new \DateTime('now');
+        $interval = new \DateInterval('P1Y');
+        return $this->redirectToRoute('app_event_list_filter',
+            array('page' => 1,
+                'price' => $price,
+                'dateStart' => $start->format('Y-m-d'),
+                'dateEnd' => $start->add($interval)->format('Y-m-d')));
     }
     /**
      * @Route("/events/{page}", name="app_event_list_paging")
