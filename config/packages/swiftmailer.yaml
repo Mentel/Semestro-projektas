@@ -1,3 +1,10 @@
 swiftmailer:
     url: '%env(MAILER_URL)%'
-    spool: { type: 'memory' }
+    spool:
+        type: memory
+    #spool:
+    #    type: file
+    #    path: '%kernel.cache_dir%/swiftmailer/spool'
+    #antiflood:
+    #    threshold: 1
+    #    sleep: 10

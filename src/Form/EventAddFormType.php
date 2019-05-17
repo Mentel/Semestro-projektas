@@ -2,6 +2,8 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -77,6 +79,17 @@ class  EventAddFormType extends AbstractType
                         'max' => 2000,
                         'maxMessage' => 'Maksimalus leistinas renginio aprašymo ilgis: {{ limit }}',
                     ]),
+                ]
+            ])
+            ->add("categories", EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                'expanded' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Pasirinkite bent vieną kategoriją',
+                    ])
                 ]
             ]);
     }

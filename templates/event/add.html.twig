@@ -6,65 +6,86 @@
 
 <div class="row justify-content-center pt-3">
     <div class="card">
-        <div class="card-body" style="min-width: 350px">
+        <div class="card-body" style="min-width: 500px">
             {{ form_start(eventAddForm) }}
             <div class="row justify-content-center">
                 <h1 class="h3 mb-3 mt-2 font-weight-normal">Renginio įvedimas</h1>
             </div>
 
-            <div class="form-group">
-                <label for="name">Renginio pavadinimas</label>
-                    {% if form_errors(eventAddForm.name)|length > 0 %}
-                        <div class="alert alert-danger">
-                            {{ form_errors(eventAddForm.name) }}
-                        </div>
-                    {% endif %}
-                {{ form_widget(eventAddForm.name, {'attr': {'type': 'text', 'class': 'form-control', 'name': 'name', 'id': 'name', 'required': '', 'placeholder': 'Renginio pavadinimas'}}) }}
-            </div>
-
-            <div class="form-group">
-                <label for="date">Data</label>
-                {% if form_errors(eventAddForm.date)|length > 0 %}
-                    <div class="alert alert-danger">
-                        {{ form_errors(eventAddForm.date) }}
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="name">Renginio pavadinimas</label>
+                        {% if form_errors(eventAddForm.name)|length > 0 %}
+                            <div class="alert alert-danger">
+                                {{ form_errors(eventAddForm.name) }}
+                            </div>
+                        {% endif %}
+                        {{ form_widget(eventAddForm.name, {'attr': {'type': 'text', 'class': 'form-control', 'name': 'name', 'id': 'name', 'required': '', 'placeholder': 'Renginio pavadinimas'}}) }}
                     </div>
-                {% endif %}
-                {{ form_widget(eventAddForm.date, {'attr': {'type': 'date', 'class': 'form-control', 'name': 'date', 'id': 'date', 'required': '', 'style': 'max-width: 180px'}}) }}
-            </div>
 
-            <div class="form-group">
-                <label for="address">Adresas</label>
-                {% if form_errors(eventAddForm.address)|length > 0 %}
-                    <div class="alert alert-danger">
-                        {{ form_errors(eventAddForm.address) }}
+                    <div class="form-group">
+                        <label for="address">Adresas</label>
+                        {% if form_errors(eventAddForm.address)|length > 0 %}
+                            <div class="alert alert-danger">
+                                {{ form_errors(eventAddForm.address) }}
+                            </div>
+                        {% endif %}
+                        {{ form_widget(eventAddForm.address, {'attr': {'type': 'text', 'class': 'form-control', 'name': 'address', 'id': 'address', 'required': '', 'placeholder': 'Renginio adresas'}}) }}
                     </div>
-                {% endif %}
-                {{ form_widget(eventAddForm.address, {'attr': {'type': 'text', 'class': 'form-control', 'name': 'address', 'id': 'address', 'required': '', 'placeholder': 'Renginio adresas'}}) }}
-            </div>
 
-            <div class="form-group">
-                <label for="price">Kaina</label>
-                {% if form_errors(eventAddForm.price)|length > 0 %}
-                    <div class="alert alert-danger">
-                        {{ form_errors(eventAddForm.price) }}
+                    <div class="form-group">
+                        <label for="description">Aprašymas</label>
+                        {% if form_errors(eventAddForm.description)|length > 0 %}
+                            <div class="alert alert-danger">
+                                {{ form_errors(eventAddForm.description) }}
+                            </div>
+                        {% endif %}
+                        {{ form_widget(eventAddForm.description, {'attr': {'type': 'text', 'class': 'form-control', 'name': 'description', 'id': 'description', 'required': '', 'placeholder': 'Renginio aprašymas'}}) }}
                     </div>
-                {% endif %}
-                {{ form_widget(eventAddForm.price, {'attr': {'type': 'text', 'class': 'form-control', 'name': 'price', 'id': 'price', 'required': '', 'placeholder': 'Kaina €', 'style': 'max-width: 150px'}})  }}
-            </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="date">Data</label>
+                        {% if form_errors(eventAddForm.date)|length > 0 %}
+                            <div class="alert alert-danger">
+                                {{ form_errors(eventAddForm.date) }}
+                            </div>
+                        {% endif %}
+                        {{ form_widget(eventAddForm.date, {'attr': {'type': 'date', 'class': '', 'name': 'date', 'id': 'date', 'required': ''}}) }}
+                    </div>
 
-            <div class="form-group">
-                <label for="description">Aprašymas</label>
-                {% if form_errors(eventAddForm.description)|length > 0 %}
-                    <div class="alert alert-danger">
-                        {{ form_errors(eventAddForm.description) }}
+                    <div class="form-group">
+                        <label for="price">Kaina</label>
+                        {% if form_errors(eventAddForm.price)|length > 0 %}
+                            <div class="alert alert-danger">
+                                {{ form_errors(eventAddForm.price) }}
+                            </div>
+                        {% endif %}
+                        {{ form_widget(eventAddForm.price, {'attr': {'type': 'text', 'class': 'form-control', 'name': 'price', 'id': 'price', 'required': '', 'placeholder': 'Kaina €', 'style': 'max-width: 150px'}})  }}
                     </div>
-                {% endif %}
-                {{ form_widget(eventAddForm.description, {'attr': {'type': 'text', 'class': 'form-control', 'name': 'description', 'id': 'description', 'required': '', 'placeholder': 'Renginio aprašymas'}}) }}
+
+                    <div class="form-group">
+                        <label for="description">Kategorijos</label>
+                        {% if message|length > 0 %}
+                            <div class="alert alert-danger">
+                                {{ message }}
+                            </div>
+                        {% endif %}
+                        {% if form_errors(eventAddForm.categories)|length > 0 %}
+                            <div class="alert alert-danger">
+                                {{ form_errors(eventAddForm.categories) }}
+                            </div>
+                        {% endif %}
+                        {{ form_widget(eventAddForm.categories, {'attr': {'type': 'checkbox', 'class': 'form-control', 'name': 'categories', 'id': 'categories'}}) }}
+                    </div>
+                </div>
             </div>
 
             <div class="row justify-content-center">
                 <button type="submit" class="btn btn-success">Pridėti</button>
             </div>
+
             {{ form_end(eventAddForm) }}
         </div>
     </div>
