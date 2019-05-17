@@ -34,7 +34,7 @@ class EventRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Event
@@ -47,4 +47,22 @@ class EventRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findByDate($from, $to, $price): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT p
+        FROM App\Entity\Event p
+        WHERE p.date > :from
+        AND p.date < :to
+        AND p.price < :price
+        ORDER BY p.date ASC'
+        )->setParameter('from', $from)
+            ->setParameter('to', $to)
+            ->setParameter('price', $price);
+
+        // returns an array of Product objects
+        return $query->execute();
+    }
 }

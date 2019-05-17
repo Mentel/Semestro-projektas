@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\EventAddFormType;
+use App\Form\EventFilterFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -115,5 +116,51 @@ class EventController extends AbstractController
 
         return $this->redirectToRoute('app_event_list_paging', array('page' => 1));
     }
+    /**
+     * @Route("/events/{dateStart}/{dateEnd}/{price}/{page}", name="app_event_list_filter")
+     */
+    public function listEventsN($page, $dateStart, $dateEnd, Request $request, $price)
+    {
+        $form = $this->createForm(EventFilterFormType::class);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $start = $form->get('date')->getData();
+            $end = $form->get('dateTo')->getData();
+            $price = $form->get('price')->getData();
+            return $this->redirectToRoute('app_event_list_filter',
+                array('page' => 1,
+                    'price' => $price,
+                    'dateStart' => $start->format('Y-m-d'),
+                    'dateEnd' => $end->format('Y-m-d') ));
+        }
+
+        $length = 5;
+        $size = $this->getDoctrine()->getRepository(Event::class)->count(array());
+        $pageCount = ceil($size / $length);
+        if ($size == 0)
+        {
+            return $this->redirectToRoute('app_index');
+        }
+        if ($page < 1 || $page > $pageCount)
+        {
+            return $this->redirectToRoute('app_event_list_paging', array('page' => 1));
+        }
+
+
+        $start = new \DateTime($dateStart);
+        $end = new \DateTime($dateEnd);
+        $form->get('date')->setData($start);
+        $form->get('dateTo')->setData($end);
+        $form->get('price')->setData($price);
+
+        $event=$this->getDoctrine()->getRepository(Event::class)->findByDate($start, $end, $price);
+
+
+
+
+        $offset = ($page - 1)* $length;
+        $eventManager = $this->getDoctrine()->getManager();
+        return $this->render('event/filter.html.twig', ['events' => $event, 'pageNumber' => $page, 'pageCount' => $pageCount, 'eventListForm' => $form->createView()]);
+    }
 }
