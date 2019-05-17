@@ -5,6 +5,15 @@
 {% block body %}
     <div class="container">
         <h1 class="mb-4 ml-2">Renginiai</h1>
+        <div class="form-group">
+            <label for="price">Kaina</label>
+            {% if form_errors(eventAddForm.price)|length > 0 %}
+                <div class="alert alert-danger">
+                    {{ form_errors(eventAddForm.price) }}
+                </div>
+            {% endif %}
+            {{ form_widget(eventAddForm.price, {'attr': {'type': 'text', 'class': 'form-control', 'name': 'price', 'id': 'price', 'required': '', 'placeholder': 'Kaina €', 'style': 'max-width: 150px'}})  }}
+        </div>
         {% for event in events %}
             <div class="card mb-3" style="max-width: 1000px; min-width: 1000px">
                 <div class="card-body p-3">
