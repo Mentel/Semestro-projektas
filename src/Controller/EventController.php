@@ -240,9 +240,8 @@ class EventController extends AbstractController
 
         $limit = 5;
         $pageCount = ceil($size / $limit);
-        if ($size == 0) {
-            $event = array();
-        }
+        if($pageCount==0)
+            $pageCount=1;
         if ($page < 1 || $page > $pageCount) {
             return $this->redirectToRoute('app_event_list_filter', array('page' => 1));
         }
