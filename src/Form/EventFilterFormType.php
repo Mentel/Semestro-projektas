@@ -13,6 +13,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
 
 class EventFilterFormType extends AbstractType
 {
@@ -23,12 +25,19 @@ class EventFilterFormType extends AbstractType
         $builder
             ->add("date", DateType::class, [
                 'widget' => 'single_text',
+                'required' => false,
+                'empty_data' => 'empty'
             ])
             ->add("dateTo", DateType::class, [
                 'widget' => 'single_text',
+                'required' => false,
+                'empty_data' => 'empty'
             ])
             ->add("price", MoneyType::class, [
-
+                'required' => false,
+                'empty_data' => 'empty'
+            ])
+            ->add('filter', SubmitType::class, [
             ]);
     }
 }

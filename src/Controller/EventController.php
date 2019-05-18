@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Event;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+
 
 class EventController extends AbstractController
 {
@@ -93,11 +95,11 @@ class EventController extends AbstractController
         $price=100;
         $start=new \DateTime('now');
         $interval = new \DateInterval('P1Y');
+        $session = new Session();
+        $session->invalidate();
+        $session->start();
         return $this->redirectToRoute('app_event_list_filter',
-            array('page' => 1,
-                'price' => $price,
-                'dateStart' => $start->format('Y-m-d'),
-                'dateEnd' => $start->add($interval)->format('Y-m-d')));
+            array('page' => 1));
     }
     /**
      * @Route("/events/{page}", name="app_event_list_paging")
@@ -160,22 +162,21 @@ class EventController extends AbstractController
         return $this->redirectToRoute('app_event_list_paging', array('page' => 1));
     }
     /**
-     * @Route("/events/{dateStart}/{dateEnd}/{price}/{page}", name="app_event_list_filter")
+     * @Route("/events/list/{page}", name="app_event_list_filter")
      */
-    public function listEventsN($page, $dateStart, $dateEnd, Request $request, $price)
+    public function listEventsN($page, Request $request)
     {
+        $session = new Session();
+
         $form = $this->createForm(EventFilterFormType::class);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $start = $form->get('date')->getData();
-            $end = $form->get('dateTo')->getData();
-            $price = $form->get('price')->getData();
+        if ($form->get('filter')->isClicked()) {
+            $session->set('date',$form->get('date')->getData());
+            $session->set('dateTo',$form->get('dateTo')->getData());
+            $session->set('price',$form->get('price')->getData());
             return $this->redirectToRoute('app_event_list_filter',
-                array('page' => 1,
-                    'price' => $price,
-                    'dateStart' => $start->format('Y-m-d'),
-                    'dateEnd' => $end->format('Y-m-d') ));
+                array('page' => 1));
         }
 
         $length = 5;
@@ -191,16 +192,44 @@ class EventController extends AbstractController
         }
 
 
-        $start = new \DateTime($dateStart);
-        $end = new \DateTime($dateEnd);
-        $form->get('date')->setData($start);
-        $form->get('dateTo')->setData($end);
-        $form->get('price')->setData($price);
 
-        $event=$this->getDoctrine()->getRepository(Event::class)->findByDate($start, $end, $price);
+        $form->get('date')->setData($session->get('date'));
+        $form->get('dateTo')->setData($session->get('dateTo'));
+        $form->get('price')->setData($session->get('price'));
 
 
+        if(!$form->get('price')->isEmpty()){
+            $price=$form->get('price')->getData();
+            $session->set('price', $price);
+        }
+        else{
+            if($session->has('price'))
+                $session->remove('price');
+            $price=10000000;
+        }
 
+        if(!$form->get('date')->isEmpty()){
+            $date=$form->get('date')->getData();
+            $session->set('date', $date);
+        }
+        else{
+            if($session->has('date'))
+                $session->remove('date');
+            $date= new \DateTime('2013-01-01');
+        }
+
+        if(!$form->get('dateTo')->isEmpty()){
+            $dateTo=$form->get('dateTo')->getData();
+            $session->set('dateTo', $dateTo);
+        }
+        else{
+            if($session->has('dateTo'))
+                $session->remove('dateTo');
+            $now = new \DateTime('now');
+            $dateTo=$now->add(new \DateInterval('P50Y'));
+        }
+
+        $event=$this->getDoctrine()->getRepository(Event::class)->findByDate($date, $dateTo, $price);
 
         $offset = ($page - 1)* $length;
         $eventManager = $this->getDoctrine()->getManager();

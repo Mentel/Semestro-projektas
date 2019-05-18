@@ -41,8 +41,9 @@
                 </div>
 
                 <div class="row justify-content-center">
-                    <button type="submit" class="btn btn-success">Pridėti</button>
+                    {{ form_widget(eventListForm.filter) }}
                 </div>
+
                 {{ form_end(eventListForm) }}
             </div>
         </div>
