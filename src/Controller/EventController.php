@@ -234,17 +234,19 @@ class EventController extends AbstractController
             $now = new \DateTime('now');
             $dateTo=$now->add(new \DateInterval('P50Y'));
         }
-        if(!(count($form->get('category')->getData()))<1){
-            $category=$form->get('category')->getData();
-            $session->set('category', $dateTo);
-        }
-        else{
-            if($session->has('category'))
-                $session->remove('category');
-            $category=null;
+
+        if($session->has('category')) {
+            if (!(count($form->get('category')->getData())) < 1) {
+                $category = $form->get('category')->getData();
+                $session->set('category', $dateTo);
+            } else {
+                if ($session->has('category'))
+                    $session->remove('category');
+                $category = null;
+            }
         }
         $event=$this->getDoctrine()->getRepository(Event::class)->findByDate($date, $dateTo, $price);
-        if($category===null)
+        if(!$session->has('category'))
             $event=$this->getDoctrine()->getRepository(Event::class)->findByDate($date, $dateTo, $price);
         else {
             $event = $this->getDoctrine()->getRepository(Event::class)->findFilter($date, $dateTo, $price, $category);
