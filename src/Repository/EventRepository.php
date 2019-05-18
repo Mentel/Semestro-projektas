@@ -56,7 +56,7 @@ class EventRepository extends ServiceEntityRepository
         FROM App\Entity\Event p
         WHERE p.date > :from
         AND p.date < :to
-        AND p.price < :price
+        AND p.price <= :price
         ORDER BY p.date ASC'
         )->setParameter('from', $from)
             ->setParameter('to', $to)
@@ -76,7 +76,7 @@ class EventRepository extends ServiceEntityRepository
         FROM App\Entity\Event p
         WHERE p.date > :from
         AND p.date < :to
-        AND p.price < :price
+        AND p.price <= :price
         AND :category MEMBER OF p.category
         ORDER BY p.date ASC'
         )->setParameter('from', $from)
