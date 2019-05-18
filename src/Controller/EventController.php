@@ -234,7 +234,7 @@ class EventController extends AbstractController
             $now = new \DateTime('now');
             $dateTo=$now->add(new \DateInterval('P50Y'));
         }
-        if(!empty($form->get('category'))){
+        if(!(count($form->get('category')->getData()))<1){
             $category=$form->get('category')->getData();
             $session->set('category', $dateTo);
         }
@@ -242,7 +242,6 @@ class EventController extends AbstractController
             if($session->has('category'))
                 $session->remove('category');
             $category=null;
-            echo "veikia";
         }
         $event=$this->getDoctrine()->getRepository(Event::class)->findByDate($date, $dateTo, $price);
         if($category===null)
