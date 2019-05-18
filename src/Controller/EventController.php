@@ -250,10 +250,8 @@ class EventController extends AbstractController
 
         if (!$session->has('category')) {
             $event = $this->getDoctrine()->getRepository(Event::class)->findByDate($date, $dateTo, $price, $limit, $offset);
-            $size = count($event);
         } else {
             $event = $this->getDoctrine()->getRepository(Event::class)->findFilter($date, $dateTo, $price, $category, $limit, $offset);
-            $size = count($event);
         }
 
         return $this->render('event/filter.html.twig', ['events' => $event, 'pageNumber' => $page, 'pageCount' => $pageCount, 'eventListForm' => $form->createView()]);
