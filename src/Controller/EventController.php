@@ -183,12 +183,14 @@ class EventController extends AbstractController
             return $this->redirectToRoute('app_event_list_filter',
                 array('page' => 1));
         }
-
+//        $a = $session->get('category');
+//        foreach($a as $b){
+//            echo $b;
+//        }
         $form->get('date')->setData($session->get('date'));
         $form->get('dateTo')->setData($session->get('dateTo'));
         $form->get('price')->setData($session->get('price'));
-        if ($session->has('category'))
-            $form->get('category')->setData($session->get('category'));
+        $form->get('category')->setData($session->get('category'));
 
 
         if (!$form->get('price')->isEmpty()) {
@@ -222,7 +224,7 @@ class EventController extends AbstractController
         if ($session->has('category')) {
             if (!(count($form->get('category')->getData())) < 1) {
                 $category = $form->get('category')->getData();
-                $session->set('category', $dateTo);
+                $session->set('category', $category);
             } else {
                 if ($session->has('category'))
                     $session->remove('category');
