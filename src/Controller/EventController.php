@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\User;
 use App\Form\EventAddFormType;
 use App\Form\EventFilterFormType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -194,9 +195,7 @@ class EventController extends AbstractController
         {
             return $this->redirectToRoute('app_event_list_paging', array('page' => 1));
         }
-
-
-
+        
         $form->get('date')->setData($session->get('date'));
         $form->get('dateTo')->setData($session->get('dateTo'));
         $form->get('price')->setData($session->get('price'));
@@ -254,5 +253,46 @@ class EventController extends AbstractController
         $offset = ($page - 1)* $length;
         $eventManager = $this->getDoctrine()->getManager();
         return $this->render('event/filter.html.twig', ['events' => $event, 'pageNumber' => $page, 'pageCount' => $pageCount, 'eventListForm' => $form->createView()]);
+    }
+    /**
+     * @Route("event/edit/{id}", name="app_event_edit")
+     */
+    public function eventEdit(Request $request, $id)
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'User tried to access a page without having ROLE_ADMIN');
+        $event = $this->getDoctrine()->getRepository(Event::class)->find($id);
+
+        if(!$event)
+        {
+            throw $this->createNotFoundException(
+                'Klaida: Nėra renginio su id ' .$id
+            );
+        }
+
+        $form = $this->createForm(EventAddFormType::class, $event);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $user = $this->get('security.token_storage')->getToken()->getUser();
+            $data = $form->getData();
+
+            $event->setHost($user);
+            $event->setName($data['name']);
+            $event->setDate($data['date']);
+            $event->setAddress($data['address']);
+            $event->setPrice($data['price']);
+            $event->setDescription($data['description']);
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_event_list_paging', array('page' => 1));
+        }
+
+        return $this->render('event/edit.html.twig', [
+            'eventAddForm' => $form->createView()
+        ]);
+
     }
 }
