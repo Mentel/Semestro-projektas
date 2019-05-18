@@ -257,13 +257,15 @@ class EventController extends AbstractController
 
         return $this->render('event/filter.html.twig', ['events' => $event, 'pageNumber' => $page, 'pageCount' => $pageCount, 'eventListForm' => $form->createView()]);
     }
+
     /**
-     * @Route("event/edit/{id}", name="app_event_edit")
+     * @Route("/event/edit/{id}", name="app_event_edit")
      */
-    public function eventEdit(Request $request, $id)
+    public function editEvent(Request $request, $id)
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'User tried to access a page without having ROLE_ADMIN');
-        $event = $this->getDoctrine()->getRepository(Event::class)->find($id);
+        $entityManager = $this->getDoctrine()->getManager();
+        $event = $entityManager->getRepository(Event::class)->find($id);
 
         if(!$event)
         {
@@ -272,30 +274,34 @@ class EventController extends AbstractController
             );
         }
 
-        $form = $this->createForm(EventAddFormType::class, $event);
+        $form = $this->createForm(EventAddFormType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $event->setName($form->get('name')->getData());
+            $event->setPrice($form->get('price')->getData());
+            $event->setDescription($form->get('description')->getData());
+            $event->setAddress($form->get('address')->getData());
+            $event->setDate($form->get('date')->getData());
 
-            $user = $this->get('security.token_storage')->getToken()->getUser();
-            $data = $form->getData();
 
-            $event->setHost($user);
-            $event->setName($data['name']);
-            $event->setDate($data['date']);
-            $event->setAddress($data['address']);
-            $event->setPrice($data['price']);
-            $event->setDescription($data['description']);
-
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_event_list_paging', array('page' => 1));
+            return $this->redirectToRoute('app_event_list_filter', array('page' => 1));
         }
 
-        return $this->render('event/edit.html.twig', [
-            'eventAddForm' => $form->createView()
-        ]);
+        $form->get('date')->setData($event->getDate());
+        $form->get('name')->setData($event->getName());
+        $form->get('price')->setData($event->getPrice());
+        $form->get('address')->setData($event->getAddress());
+        $form->get('description')->setData($event->getDescription());
 
+
+
+        return $this->render('event/edit.html.twig', [
+            'eventAddForm' => $form->createView(),
+            'message' => ''
+        ]);
     }
+
 }
