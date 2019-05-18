@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\EventAddFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Event;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +16,7 @@ class EventController extends AbstractController
     /**
      * @Route("/event/add", name="app_event_add")
      */
-    public function addEvent(Request $request)
+    public function addEvent(Request $request, \Swift_Mailer $mailer)
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'User tried to access a page without having ROLE_ADMIN');
 
@@ -25,6 +27,13 @@ class EventController extends AbstractController
             $user = $this->get('security.token_storage')->getToken()->getUser();
             $data = $form->getData();
 
+            if(count($data['categories']) < 1){
+                return $this->render('event/add.html.twig', [
+                    'eventAddForm' => $form->createView(),
+                    'message' => 'Pasirinkite bent vieną kategoriją'
+                ]);
+            }
+
             $event = new Event();
 
             $event->setHost($user);
@@ -33,16 +42,46 @@ class EventController extends AbstractController
             $event->setAddress($data['address']);
             $event->setPrice($data['price']);
             $event->setDescription($data['description']);
+            foreach ($data['categories'] as $category){
+                $event->addCategory($category);
+            }
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($event);
             $entityManager->flush();
 
+            //Email siuntimas tiem kas prenumeravo renginio kategorijas
+
+            $accountsSent = array();
+            $categories = $event->getCategory();
+            foreach ($categories as $category){
+                $users = $category->getUser();
+                foreach ($users as $usr){
+                    if(!in_array($usr->getEmail(), $accountsSent)){
+
+                        $message = (new \Swift_Message('Įdėtas naujas renginys kuris gali jus sudominti!'))
+                            ->setFrom('datadogprojektas@gmail.com')
+                            ->setTo($usr->getEmail())
+                            ->setBody(
+                                $this->renderView(
+                                    'email/eventaddsubscribed.html.twig',
+                                    ['name' => $event->getName(), 'id' => $event->getId()]
+                                ),
+                                'text/html'
+                            );
+                        $mailer->send($message);
+
+                        $accountsSent[] = $usr->getEmail();
+                    }
+                }
+            }
+
             return $this->redirectToRoute('app_event_list_paging', array('page' => 1));
         }
 
         return $this->render('event/add.html.twig', [
-            'eventAddForm' => $form->createView()
+            'eventAddForm' => $form->createView(),
+            'message' => ''
         ]);
     }
 
@@ -51,6 +90,7 @@ class EventController extends AbstractController
      */
     public function listAllEvents()
     {
+
         return $this->redirectToRoute('app_event_list_paging', array('page' => 1));
     }
     /**
@@ -89,10 +129,28 @@ class EventController extends AbstractController
                 'description' => $event->getDescription(),
                 'date' => $event->getDate(),
                 'price' => $event->getPrice(),
-                'categories' => $event->getCategory()
+                'categories' => $event->getCategory(),
+                'id' => $id
                 ]
             );
         }
+        return $this->redirectToRoute('app_event_list_paging', array('page' => 1));
+    }
+    /**
+     * @Route("/event/delete/{id}", name="app_event_delete")
+     */
+    public function eventDelete($id)
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'User tried to access a page without having ROLE_ADMIN');
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $event = $entityManager->getRepository(Event::class)
+            ->find($id);
+        if($event != null){
+            $entityManager->remove($event);
+        }
+        $entityManager->flush();
+
         return $this->redirectToRoute('app_event_list_paging', array('page' => 1));
     }
 

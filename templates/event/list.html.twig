@@ -10,7 +10,7 @@
                 <div class="card-body p-3">
                     <div class="row">
                         <div class="col-3">
-                            <img src="{{ asset('images/placeholder.png') }}">
+                            <img class="rounded" src="{{ asset('images/placeholder.png') }}">
                         </div>
                         <div class="col">
                             <div class="row">
@@ -29,8 +29,8 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-4 ml-2">
-                                    <h5>Data: {{ event.date.format('Y-m-d H:i') }}</h5>
+                                <div class="col-3 ml-2">
+                                    <h5>Data: {{ event.date.format('Y-m-d') }}</h5>
                                 </div>
                                 <div class="col">
                                     <h5>Vieta: {{ event.address }}</h5>
@@ -43,6 +43,11 @@
                                             {{ category.name }}
                                         {% endfor %}
                                     </h7>
+                                </div>
+                                <div class="col-2 ml-2">
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <h7><a onclick="return confirm('Tikrai ištrinti?');" href="{{ url('app_event_delete',{id: event.id}) }}">Ištrinti</a></h7>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

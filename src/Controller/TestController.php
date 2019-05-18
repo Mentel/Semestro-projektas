@@ -10,30 +10,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class TestController extends AbstractController
 {
-    //TODO: redo functions
-    /**
-     * @Route("/user/list", name="app_user_list")
-     */
-    public function listUsers()
-    {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'User tried to access a page without having ROLE_ADMIN');
-        $repository = $this->getDoctrine()->getRepository(User::class)
-            ->findAll();
-        foreach($repository as &$a)
-        {
-            $a->getEmail();
-            echo "<br>";
-            echo $a->getEmail();
-            foreach($a->getRoles() as &$b){
-                echo "<br>";
-                echo "role";
-                echo $b;
-            }
-        }
-        echo "<br>";
-        return new Response('nic');
-    }
-
+    //TODO: Remove in production
     /**
      * @Route("/admin", name="app_create_superuser")
      */
@@ -55,48 +32,5 @@ class TestController extends AbstractController
         $entityManager->flush();
         echo 'nice';
         return new Response('nic');
-    }
-
-    //TODO: Check if this actually works
-    /**
-     * @Route("/user/delete/{max}", name="app_user_delete")
-     */
-    public function deleteUser($max)
-    {
-        $entityManager = $this->getDoctrine()->getManager();
-        $repository = $this->getDoctrine()->getRepository(Event::class)
-            ->findAll();
-        foreach($repository as &$a)
-        {
-            $entityManager->remove($a);
-        }
-        $repository = $this->getDoctrine()->getRepository(User::class)
-            ->findAll();
-        foreach($repository as &$a)
-        {
-            $entityManager->remove($a);
-        }
-        $entityManager->flush();
-        return new Response('gz');
-    }
-
-    /**
-     * @Route("/send", name="app_send_email")
-     */
-    public function testEmail(\Swift_Mailer $mailer)
-    {
-        $message = (new \Swift_Message('Email test'))
-            ->setFrom('datadogprojektas@gmail.com')
-            ->setTo('tadas357@gmail.com')
-            ->setBody(
-                $this->renderView(
-                    'email/test.html.twig'
-                ),
-                'text/html'
-            );
-
-        $mailer->send($message);
-
-        return new Response('gz');
     }
 }
