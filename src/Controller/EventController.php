@@ -176,55 +176,50 @@ class EventController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->get('filter')->isClicked()) {
-            $session->set('date',$form->get('date')->getData());
-            $session->set('dateTo',$form->get('dateTo')->getData());
-            $session->set('price',$form->get('price')->getData());
-            $session->set('category',$form->get('category')->getData());
+            $session->set('date', $form->get('date')->getData());
+            $session->set('dateTo', $form->get('dateTo')->getData());
+            $session->set('price', $form->get('price')->getData());
+            $session->set('category', $form->get('category')->getData());
             return $this->redirectToRoute('app_event_list_filter',
                 array('page' => 1));
         }
 
-
-        
         $form->get('date')->setData($session->get('date'));
         $form->get('dateTo')->setData($session->get('dateTo'));
         $form->get('price')->setData($session->get('price'));
-        if($session->has('category'))
+        if ($session->has('category'))
             $form->get('category')->setData($session->get('category'));
 
 
-        if(!$form->get('price')->isEmpty()){
-            $price=$form->get('price')->getData();
+        if (!$form->get('price')->isEmpty()) {
+            $price = $form->get('price')->getData();
             $session->set('price', $price);
-        }
-        else{
-            if($session->has('price'))
+        } else {
+            if ($session->has('price'))
                 $session->remove('price');
-            $price=10000000;
+            $price = 10000000;
         }
 
-        if(!$form->get('date')->isEmpty()){
-            $date=$form->get('date')->getData();
+        if (!$form->get('date')->isEmpty()) {
+            $date = $form->get('date')->getData();
             $session->set('date', $date);
-        }
-        else{
-            if($session->has('date'))
+        } else {
+            if ($session->has('date'))
                 $session->remove('date');
-            $date= new \DateTime('2013-01-01');
+            $date = new \DateTime('2013-01-01');
         }
 
-        if(!$form->get('dateTo')->isEmpty()){
-            $dateTo=$form->get('dateTo')->getData();
+        if (!$form->get('dateTo')->isEmpty()) {
+            $dateTo = $form->get('dateTo')->getData();
             $session->set('dateTo', $dateTo);
-        }
-        else{
-            if($session->has('dateTo'))
+        } else {
+            if ($session->has('dateTo'))
                 $session->remove('dateTo');
             $now = new \DateTime('now');
-            $dateTo=$now->add(new \DateInterval('P50Y'));
+            $dateTo = $now->add(new \DateInterval('P50Y'));
         }
 
-        if($session->has('category')) {
+        if ($session->has('category')) {
             if (!(count($form->get('category')->getData())) < 1) {
                 $category = $form->get('category')->getData();
                 $session->set('category', $dateTo);
@@ -234,32 +229,29 @@ class EventController extends AbstractController
                 $category = null;
             }
         }
-        if(!$session->has('category')) {
-            $event = $this->getDoctrine()->getRepository(Event::class)->findByDate($date, $dateTo, $price);
+        $count = $this->getDoctrine()->getRepository(Event::class)->count(array());
+        if (!$session->has('category')) {
+            $event = $this->getDoctrine()->getRepository(Event::class)->findByDate($date, $dateTo, $price, $count , 0);
             $size = count($event);
-        }
-        else {
-            $event = $this->getDoctrine()->getRepository(Event::class)->findFilter($date, $dateTo, $price, $category);
+        } else {
+            $event = $this->getDoctrine()->getRepository(Event::class)->findFilter($date, $dateTo, $price, $category, $count, 0);
             $size = count($event);
         }
 
         $limit = 5;
         $pageCount = ceil($size / $limit);
-        if ($page < 1 || $page > $pageCount)
-        {
+        if ($page < 1 || $page > $pageCount) {
             return $this->redirectToRoute('app_event_list_filter', array('page' => 1));
         }
-        if ($size == 0)
-        {
+        if ($size == 0) {
             $event = array();
         }
-        $offset = ($page - 1)* $limit;
+        $offset = ($page - 1) * $limit;
 
-        if(!$session->has('category')) {
+        if (!$session->has('category')) {
             $event = $this->getDoctrine()->getRepository(Event::class)->findByDate($date, $dateTo, $price, $limit, $offset);
             $size = count($event);
-        }
-        else {
+        } else {
             $event = $this->getDoctrine()->getRepository(Event::class)->findFilter($date, $dateTo, $price, $category, $limit, $offset);
             $size = count($event);
         }

@@ -57,14 +57,12 @@ class EventRepository extends ServiceEntityRepository
         WHERE p.date > :from
         AND p.date < :to
         AND p.price < :price
-        ORDER BY p.date ASC
-        OFFSET :offset ROWS
-        FETCH NEXT :limit ROWS ONLY'
+        ORDER BY p.date ASC'
         )->setParameter('from', $from)
             ->setParameter('to', $to)
             ->setParameter('price', $price)
-            ->setParameter('limit', $limit)
-            ->setParameter('offset', $offset);
+            ->setMaxResults($limit)
+            ->setFirstResult($offset);
 
         // returns an array of Product objects
         return $query->execute();
@@ -80,15 +78,13 @@ class EventRepository extends ServiceEntityRepository
         AND p.date < :to
         AND p.price < :price
         AND :category MEMBER OF p.category
-        ORDER BY p.date ASC
-        OFFSET :offset ROWS
-        FETCH NEXT :limit ROWS ONLY'
+        ORDER BY p.date ASC'
         )->setParameter('from', $from)
             ->setParameter('to', $to)
             ->setParameter('category', $category)
             ->setParameter('price', $price)
-            ->setParameter('limit', $limit)
-            ->setParameter('offset', $offset);
+            ->setMaxResults($limit)
+            ->setFirstResult($offset);
 
         // returns an array of Product objects
         return $query->execute();
