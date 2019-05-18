@@ -65,4 +65,24 @@ class EventRepository extends ServiceEntityRepository
         // returns an array of Product objects
         return $query->execute();
     }
+    public function findFilter($from, $to, $price, $category): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT p
+        FROM App\Entity\Event p
+        WHERE p.date > :from
+        AND p.date < :to
+        AND p.price < :price
+        AND :category MEMBER OF p.category
+        ORDER BY p.date ASC'
+        )->setParameter('from', $from)
+            ->setParameter('to', $to)
+            ->setParameter('category', $category)
+            ->setParameter('price', $price);
+
+        // returns an array of Product objects
+        return $query->execute();
+    }
 }

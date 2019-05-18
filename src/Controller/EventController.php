@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\User;
 use App\Form\EventAddFormType;
 use App\Form\EventFilterFormType;
@@ -99,6 +100,7 @@ class EventController extends AbstractController
         $session->remove('date');
         $session->remove('dateTo');
         $session->remove('price');
+        $session->remove('category');
         return $this->redirectToRoute('app_event_list_filter',
             array('page' => 1));
     }
@@ -176,6 +178,7 @@ class EventController extends AbstractController
             $session->set('date',$form->get('date')->getData());
             $session->set('dateTo',$form->get('dateTo')->getData());
             $session->set('price',$form->get('price')->getData());
+            $session->set('category',$form->get('category')->getData());
             return $this->redirectToRoute('app_event_list_filter',
                 array('page' => 1));
         }
@@ -197,6 +200,8 @@ class EventController extends AbstractController
         $form->get('date')->setData($session->get('date'));
         $form->get('dateTo')->setData($session->get('dateTo'));
         $form->get('price')->setData($session->get('price'));
+        if($session->has('category'))
+            $form->get('category')->setData($session->get('category'));
 
 
         if(!$form->get('price')->isEmpty()){
@@ -229,9 +234,22 @@ class EventController extends AbstractController
             $now = new \DateTime('now');
             $dateTo=$now->add(new \DateInterval('P50Y'));
         }
-
+        if(!empty($form->get('category'))){
+            $category=$form->get('category')->getData();
+            $session->set('category', $dateTo);
+        }
+        else{
+            if($session->has('category'))
+                $session->remove('category');
+            $category=null;
+            echo "veikia";
+        }
         $event=$this->getDoctrine()->getRepository(Event::class)->findByDate($date, $dateTo, $price);
-
+        if($category===null)
+            $event=$this->getDoctrine()->getRepository(Event::class)->findByDate($date, $dateTo, $price);
+        else {
+            $event = $this->getDoctrine()->getRepository(Event::class)->findFilter($date, $dateTo, $price, $category);
+        }
         $offset = ($page - 1)* $length;
         $eventManager = $this->getDoctrine()->getManager();
         return $this->render('event/filter.html.twig', ['events' => $event, 'pageNumber' => $page, 'pageCount' => $pageCount, 'eventListForm' => $form->createView()]);

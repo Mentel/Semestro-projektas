@@ -14,6 +14,10 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use App\Entity\Category;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
 
 
 class EventFilterFormType extends AbstractType
@@ -36,6 +40,15 @@ class EventFilterFormType extends AbstractType
             ->add("price", MoneyType::class, [
                 'required' => false,
                 'empty_data' => 'empty'
+
+            ])
+            ->add("category", EntityType::class, [
+                'required' => false,
+                'class' => Category::class,
+                'choice_label' => 'name',
+                'choice_value' => 'id',
+                'expanded' => true,
+                'multiple' => true
             ])
             ->add('filter', SubmitType::class, [
             ]);
