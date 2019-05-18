@@ -184,17 +184,7 @@ class EventController extends AbstractController
                 array('page' => 1));
         }
 
-        $length = 5;
-        $size = $this->getDoctrine()->getRepository(Event::class)->count(array());
-        $pageCount = ceil($size / $length);
-        if ($size == 0)
-        {
-            return $this->redirectToRoute('app_index');
-        }
-        if ($page < 1 || $page > $pageCount)
-        {
-            return $this->redirectToRoute('app_event_list_paging', array('page' => 1));
-        }
+
         
         $form->get('date')->setData($session->get('date'));
         $form->get('dateTo')->setData($session->get('dateTo'));
@@ -244,14 +234,36 @@ class EventController extends AbstractController
                 $category = null;
             }
         }
-        $event=$this->getDoctrine()->getRepository(Event::class)->findByDate($date, $dateTo, $price);
-        if(!$session->has('category'))
-            $event=$this->getDoctrine()->getRepository(Event::class)->findByDate($date, $dateTo, $price);
+        if(!$session->has('category')) {
+            $event = $this->getDoctrine()->getRepository(Event::class)->findByDate($date, $dateTo, $price);
+            $size = count($event);
+        }
         else {
             $event = $this->getDoctrine()->getRepository(Event::class)->findFilter($date, $dateTo, $price, $category);
+            $size = count($event);
         }
-        $offset = ($page - 1)* $length;
-        $eventManager = $this->getDoctrine()->getManager();
+
+        $limit = 5;
+        $pageCount = ceil($size / $limit);
+        if ($page < 1 || $page > $pageCount)
+        {
+            return $this->redirectToRoute('app_event_list_filter', array('page' => 1));
+        }
+        if ($size == 0)
+        {
+            $event = array();
+        }
+        $offset = ($page - 1)* $limit;
+
+        if(!$session->has('category')) {
+            $event = $this->getDoctrine()->getRepository(Event::class)->findByDate($date, $dateTo, $price, $limit, $offset);
+            $size = count($event);
+        }
+        else {
+            $event = $this->getDoctrine()->getRepository(Event::class)->findFilter($date, $dateTo, $price, $category, $limit, $offset);
+            $size = count($event);
+        }
+
         return $this->render('event/filter.html.twig', ['events' => $event, 'pageNumber' => $page, 'pageCount' => $pageCount, 'eventListForm' => $form->createView()]);
     }
     /**

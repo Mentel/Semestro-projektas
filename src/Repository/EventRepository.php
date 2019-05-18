@@ -47,7 +47,7 @@ class EventRepository extends ServiceEntityRepository
         ;
     }
     */
-    public function findByDate($from, $to, $price): array
+    public function findByDate($from, $to, $price, $limit, $offset): array
     {
         $entityManager = $this->getEntityManager();
 
@@ -57,15 +57,19 @@ class EventRepository extends ServiceEntityRepository
         WHERE p.date > :from
         AND p.date < :to
         AND p.price < :price
-        ORDER BY p.date ASC'
+        ORDER BY p.date ASC
+        OFFSET :offset ROWS
+        FETCH NEXT :limit ROWS ONLY'
         )->setParameter('from', $from)
             ->setParameter('to', $to)
-            ->setParameter('price', $price);
+            ->setParameter('price', $price)
+            ->setParameter('limit', $limit)
+            ->setParameter('offset', $offset);
 
         // returns an array of Product objects
         return $query->execute();
     }
-    public function findFilter($from, $to, $price, $category): array
+    public function findFilter($from, $to, $price, $category, $limit, $offset): array
     {
         $entityManager = $this->getEntityManager();
 
@@ -76,11 +80,15 @@ class EventRepository extends ServiceEntityRepository
         AND p.date < :to
         AND p.price < :price
         AND :category MEMBER OF p.category
-        ORDER BY p.date ASC'
+        ORDER BY p.date ASC
+        OFFSET :offset ROWS
+        FETCH NEXT :limit ROWS ONLY'
         )->setParameter('from', $from)
             ->setParameter('to', $to)
             ->setParameter('category', $category)
-            ->setParameter('price', $price);
+            ->setParameter('price', $price)
+            ->setParameter('limit', $limit)
+            ->setParameter('offset', $offset);
 
         // returns an array of Product objects
         return $query->execute();
