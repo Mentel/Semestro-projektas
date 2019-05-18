@@ -96,8 +96,9 @@ class EventController extends AbstractController
         $start=new \DateTime('now');
         $interval = new \DateInterval('P1Y');
         $session = new Session();
-        $session->invalidate();
-        $session->start();
+        $session->remove('date');
+        $session->remove('dateTo');
+        $session->remove('price');
         return $this->redirectToRoute('app_event_list_filter',
             array('page' => 1));
     }
