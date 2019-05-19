@@ -94,9 +94,6 @@ class EventController extends AbstractController
      */
     public function listAllEvents()
     {
-        $price=100;
-        $start=new \DateTime('now');
-        $interval = new \DateInterval('P1Y');
         $session = new Session();
         $session->remove('date');
         $session->remove('dateTo');
