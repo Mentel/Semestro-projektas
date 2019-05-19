@@ -86,6 +86,11 @@
                                 <div class="col">
                                     <h5>Vieta: {{ event.address }}</h5>
                                 </div>
+                                <div class="col-3 ml-2">
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <h7><a href="{{ url('app_event_edit',{id: event.id}) }}">Redaguoti</a></h7>
+                                    {% endif %}
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col ml-2">
@@ -94,6 +99,11 @@
                                             {{ category.name }}
                                         {% endfor %}
                                     </h7>
+                                </div>
+                                <div class="col-3 ml-2">
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <h7><a onclick="return confirm('Tikrai ištrinti?');" href="{{ url('app_event_delete',{id: event.id}) }}">Ištrinti</a></h7>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
