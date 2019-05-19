@@ -94,10 +94,7 @@ class EventController extends AbstractController
      */
     public function listAllEvents()
     {
-        $price=100;
-        $start=new \DateTime('now');
-        $interval = new \DateInterval('P1Y');
-        $session = new Session();
+        $session = $this->get('session');
         $session->remove('date');
         $session->remove('dateTo');
         $session->remove('price');
@@ -170,7 +167,7 @@ class EventController extends AbstractController
      */
     public function listEventsN($page, Request $request)
     {
-        $session = new Session();
+        $session = $this->get('session');
 
         $form = $this->createForm(EventFilterFormType::class);
         $form->handleRequest($request);
@@ -282,7 +279,16 @@ class EventController extends AbstractController
             $event->setDescription($form->get('description')->getData());
             $event->setAddress($form->get('address')->getData());
             $event->setDate($form->get('date')->getData());
-            $event->setCategory($form->get('categories')->getData());
+            $categoriesToDelete = $event->getCategory();
+            foreach($categoriesToDelete as $category)
+            {
+                $event->removeCategory($category);
+            }
+            $categoriesToAdd = $form->get('categories')->getData();
+            foreach($categoriesToAdd as $category)
+            {
+                $event->addCategory($category);
+            }
 
 
             $entityManager->flush();
