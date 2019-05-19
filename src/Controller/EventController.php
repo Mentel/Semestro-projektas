@@ -239,7 +239,6 @@ class EventController extends AbstractController
             $event = $this->getDoctrine()->getRepository(Event::class)->findFilter($date, $dateTo, $price, $category, $count, 0);
             $size = count($event);
         }
-        echo $size;
         $limit = 5;
         $pageCount = ceil($size / $limit);
         if($pageCount==0)
