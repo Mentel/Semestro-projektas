@@ -94,7 +94,7 @@ class EventController extends AbstractController
      */
     public function listAllEvents()
     {
-        $session = new Session();
+        $session = $this->get('session');
         $session->remove('date');
         $session->remove('dateTo');
         $session->remove('price');
@@ -167,7 +167,7 @@ class EventController extends AbstractController
      */
     public function listEventsN($page, Request $request)
     {
-        $session = new Session();
+        $session = $this->get('session');
 
         $form = $this->createForm(EventFilterFormType::class);
         $form->handleRequest($request);
