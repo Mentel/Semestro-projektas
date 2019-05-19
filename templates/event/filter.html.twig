@@ -21,7 +21,8 @@
                                     {{ form_errors(eventListForm.date) }}
                                 </div>
                             {% endif %}
-                            {{ form_widget(eventListForm.date, {'attr': {'type': 'date', 'class': 'form-control', 'name': 'date', 'id': 'date', 'style': 'max-width: 170px'}}) }}
+                            {{ form_widget(eventListForm.date, {'attr': {'type': 'date', 'class': 'form-control',
+                                'name': 'date', 'id': 'date', 'style': 'max-width: 170px'}}) }}
                         </div>
                     </div>
                     <div class="col">
@@ -32,7 +33,8 @@
                                     {{ form_errors(eventListForm.dateTo) }}
                                 </div>
                             {% endif %}
-                            {{ form_widget(eventListForm.dateTo, {'attr': {'type': 'date', 'class': 'form-control', 'name': 'dateTo', 'id': 'dateTo', 'style': 'max-width: 170px'}}) }}
+                            {{ form_widget(eventListForm.dateTo, {'attr': {'type': 'date', 'class': 'form-control',
+                                'name': 'dateTo', 'id': 'dateTo', 'style': 'max-width: 170px'}}) }}
                         </div>
                     </div>
                     <div class="col">
@@ -43,19 +45,22 @@
                                     {{ form_errors(eventListForm.price) }}
                                 </div>
                             {% endif %}
-                            {{ form_widget(eventListForm.price, {'attr': {'type': 'text', 'class': 'form-control', 'name': 'price', 'id': 'price', 'placeholder': 'Kaina €', 'style': 'max-width: 150px'}}) }}
+                            {{ form_widget(eventListForm.price, {'attr': {'type': 'text', 'class': 'form-control',
+                                'name': 'price', 'id': 'price', 'placeholder': 'Kaina €', 'style': 'max-width: 150px'}}) }}
                         </div>
                     </div>
                     <div class="col">
                         <div>
                             <label for="category">Kategorijos</label>
-                            {{ form_widget(eventListForm.category, {'attr': {'type': 'checkbox', 'class': 'form-control', 'name': 'category', 'id': 'category', 'style': 'height: 65px'}}) }}
+                            {{ form_widget(eventListForm.category, {'attr': {'type': 'checkbox', 'class': 'form-control',
+                                'name': 'category', 'id': 'category', 'style': 'height: 65px'}}) }}
                         </div>
                     </div>
                 </div>
 
                 <div class="row justify-content-center">
-                    {{ form_widget(eventListForm.filter, {'attr': {'type': 'button', 'class': 'btn btn-success', 'name': 'filter', 'id': 'filter'}}) }}
+                    {{ form_widget(eventListForm.filter, {'attr': {'type': 'button', 'class': 'btn btn-success',
+                        'name': 'filter', 'id': 'filter'}}) }}
                 </div>
 
                 {{ form_end(eventListForm) }}
