@@ -18,14 +18,10 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use App\Entity\Category;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-
-
 class EventFilterFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $now=new \DateTime('now');
-
         $builder
             ->add("date", DateType::class, [
                 'widget' => 'single_text',
