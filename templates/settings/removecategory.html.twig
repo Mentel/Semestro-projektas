@@ -16,7 +16,8 @@
             <div class="form-group">
                 <label for="exampleCategoryName">Kategorija</label>
                 {{ form_errors(form.name) }}
-                {{ form_widget(form.name, {'attr': {'type': 'text', 'class': 'form-control', 'name': 'name', 'id': 'name', 'required': '', 'autofocus': '', 'placeholder': 'Pavadinimas'}}) }}
+                {{ form_widget(form.name, {'attr': {'type': 'text', 'class': 'form-control', 'name': 'name', 'id': 'name',
+                    'required': '', 'autofocus': '', 'placeholder': 'Pavadinimas'}}) }}
             </div>
             <div class="row justify-content-center">
                 <button type="submit" class="btn btn-success" onclick="return confirm('Tikrai šalinti?');">Šalinti</button>
