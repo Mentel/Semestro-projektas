@@ -33,6 +33,7 @@ class  EventAddFormType extends AbstractType
                 ]
             ])
             ->add("date", DateType::class, [
+                'widget' => 'single_text',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Pasirinkite renginio laiką',
