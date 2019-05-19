@@ -283,6 +283,7 @@ class EventController extends AbstractController
             $event->setDescription($form->get('description')->getData());
             $event->setAddress($form->get('address')->getData());
             $event->setDate($form->get('date')->getData());
+            $event->setCategory($form->get('categories')->getData());
 
 
             $entityManager->flush();
@@ -295,6 +296,7 @@ class EventController extends AbstractController
         $form->get('price')->setData($event->getPrice());
         $form->get('address')->setData($event->getAddress());
         $form->get('description')->setData($event->getDescription());
+        $form->get('categories')->setData($event->getCategory());
 
 
 
