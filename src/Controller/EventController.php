@@ -279,7 +279,16 @@ class EventController extends AbstractController
             $event->setDescription($form->get('description')->getData());
             $event->setAddress($form->get('address')->getData());
             $event->setDate($form->get('date')->getData());
-            $event->setCategory($form->get('categories')->getData());
+            $categoriesToDelete = $event->getCategory();
+            foreach($categoriesToDelete as $category)
+            {
+                $event->removeCategory($category);
+            }
+            $categoriesToAdd = $form->get('categories')->getData();
+            foreach($categoriesToAdd as $category)
+            {
+                $event->addCategory($category);
+            }
 
 
             $entityManager->flush();
