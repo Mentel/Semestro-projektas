@@ -39,15 +39,15 @@ class EventFilterFormType extends AbstractType
             ])
             ->add("price", MoneyType::class, [
                 'required' => false,
-                'empty_data' => 'empty'
-
+                'empty_data' => 'empty',
+                'currency' => false
             ])
             ->add("category", EntityType::class, [
                 'required' => false,
                 'class' => Category::class,
                 'choice_label' => 'name',
                 'choice_value' => 'id',
-                'expanded' => true,
+                'expanded' => false,
                 'multiple' => true
             ])
             ->add('filter', SubmitType::class, [
