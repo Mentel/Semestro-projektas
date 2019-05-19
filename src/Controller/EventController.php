@@ -14,7 +14,6 @@ use App\Entity\Event;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-
 class EventController extends AbstractController
 {
     /**
