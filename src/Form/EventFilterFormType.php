@@ -51,6 +51,7 @@ class EventFilterFormType extends AbstractType
                 'multiple' => true
             ])
             ->add('filter', SubmitType::class, [
+                'label' => 'Rūšiuoti'
             ]);
     }
 }
