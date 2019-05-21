@@ -29,7 +29,7 @@ class PasswordResetController extends AbstractController
             $usr = $entityManager->getRepository(User::class)
                 ->findOneBy(['email' => $data['email']]);
             if ($usr != null) {
-                $s = substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 5)), 0, 5);
+                $s = substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 20)), 0, 20);
                 $usr->setVerify($s);
                 $entityManager->flush();
 
