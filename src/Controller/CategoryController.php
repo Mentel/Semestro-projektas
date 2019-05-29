@@ -35,7 +35,7 @@ class CategoryController extends AbstractController
             $entityManager->flush();
             return $this->render('settings/createcategory.html.twig', [
                 'createCategory' => $form->createView(),
-                'message' => "Kategorija ".$data['categoryName']." sukurta",
+                'message' => "Kategorija ".$data['categoryName']." sukurta sėkmingai",
             ]);
         }
 
@@ -98,7 +98,7 @@ class CategoryController extends AbstractController
             $entityManager->flush();
             return $this->render('settings/removecategory.html.twig', [
                 'form' => $form->createView(),
-                'message' => "Kategorija ".$category->getName()." pašalinta",
+                'message' => "Kategorija ".$category->getName()." pašalinta sėkmingai",
             ]);
         }
 
